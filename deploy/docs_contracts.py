@@ -82,7 +82,7 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
   <h3>Liquidity</h3><p>Vault withdrawals are limited to USDG that is not lent out. If markets are fully borrowed, a withdrawal waits until borrowers repay.</p>
 
   <h2 id="contracts">Contracts</h2>
-  <p>Robinhood Chain mainnet, chain ID {dep["chainId"]}, deployed 21 November 2026. Every address links to the explorer.</p>
+  <p>Robinhood Chain mainnet, chain ID {dep["chainId"]}, deployed 21 November 2026. Every address links to the explorer. Source code, tests and the deployment record are on <a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a>; changes are listed in the <a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a>.</p>
   <h3>Markets</h3>
   <table><tr><th>Market</th><th>LendingMarket</th><th>Price oracle</th><th>LTV / Liq.</th></tr>
 {mrows}</table>
