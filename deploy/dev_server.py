@@ -25,7 +25,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         elif p in ("/terms", "/privacy"):
             path = p + ".html"
         elif p.startswith("/app/") and not Path(ROOT, p.lstrip("/")).is_file():
-            path = "/app/index.html"
+            path = p + ".html" if Path(ROOT, p.lstrip("/") + ".html").is_file() else "/app/index.html"
         return super().translate_path(path)
 
     def send_error(self, code, message=None, explain=None):

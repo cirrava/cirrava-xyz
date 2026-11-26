@@ -62,7 +62,52 @@ window.CIRRAVA_DEPLOYMENT = {
       "market": "0xf8452a202b36dcDBb5da1b45A5fB1b5653295886",
       "ltv": 0.6,
       "lt": 0.65
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft",
+      "decimals": 18,
+      "token": "0xe93237C50D904957Cf27E7B1133b510C669c2e74",
+      "feed": "0x45C3C877C15E6BA2EBB19eA114Ea508d14C1Af2E",
+      "oracle": "0x95a530eeeBE6BC5D5Bb761656fB8B91cd4Be315c",
+      "market": "0xd60213409B692911F34f72FeF15DFa160a3216ec",
+      "ltv": 0.6,
+      "lt": 0.65
+    },
+    {
+      "symbol": "QQQ",
+      "name": "Invesco QQQ",
+      "decimals": 18,
+      "token": "0xD5f3879160bc7c32ebb4dC785F8a4F505888de68",
+      "feed": "0x80901d846d5D7B030F26B480776EE3b29374C2ae",
+      "oracle": "0x414fC6b34a47BfDF00ED0C0EAaB57Cde841Dc406",
+      "market": "0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65",
+      "ltv": 0.7,
+      "lt": 0.75
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Class A",
+      "decimals": 18,
+      "token": "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3",
+      "feed": "0xF6f373a037c30F0e5010d854385cA89185AE638b",
+      "oracle": "0xe9a85ff6d1fB76Ac2c6a312377F3F89B5FC7CA5C",
+      "market": "0x8E5C541120E2B1F9a908cf21d106Acfd697002E3",
+      "ltv": 0.6,
+      "lt": 0.65
+    },
+    {
+      "symbol": "AMZN",
+      "name": "Amazon",
+      "decimals": 18,
+      "token": "0x12f190a9F9d7D37a250758b26824B97CE941bF54",
+      "feed": "0xD5a1508ceD74c084eBf3cBe853e2C968fB2a651C",
+      "oracle": "0x917944A698abfa202bDbbce4759ee5Bf8A215D1c",
+      "market": "0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831",
+      "ltv": 0.6,
+      "lt": 0.65
     }
   ],
+  "marketsAddedAt": "2026-11-26T12:58:01.772Z",
   "readRpc": "/rpc"
 };

@@ -1,6 +1,6 @@
 # Source verification
 
-Every live Cirrava contract is verified on **Sourcify** as an **exact match** (same source and
+All 20 live Cirrava contracts are verified on **Sourcify** as an **exact match** (same source and
 compiler metadata), on Robinhood Chain (chain ID 4663):
 
 | Contract | Address | Sourcify |
@@ -17,6 +17,14 @@ compiler metadata), on Robinhood Chain (chain ID 4663):
 | LendingMarket TSLA | `0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971` | [view](https://repo.sourcify.dev/4663/0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971) |
 | StockOracle AAPL | `0x72AC37a2F20cA55892e8f8fDb4758068F5d12AC8` | [view](https://repo.sourcify.dev/4663/0x72AC37a2F20cA55892e8f8fDb4758068F5d12AC8) |
 | LendingMarket AAPL | `0xf8452a202b36dcDBb5da1b45A5fB1b5653295886` | [view](https://repo.sourcify.dev/4663/0xf8452a202b36dcDBb5da1b45A5fB1b5653295886) |
+| StockOracle MSFT | `0x95a530eeeBE6BC5D5Bb761656fB8B91cd4Be315c` | [view](https://repo.sourcify.dev/4663/0x95a530eeeBE6BC5D5Bb761656fB8B91cd4Be315c) |
+| LendingMarket MSFT | `0xd60213409B692911F34f72FeF15DFa160a3216ec` | [view](https://repo.sourcify.dev/4663/0xd60213409B692911F34f72FeF15DFa160a3216ec) |
+| StockOracle QQQ | `0x414fC6b34a47BfDF00ED0C0EAaB57Cde841Dc406` | [view](https://repo.sourcify.dev/4663/0x414fC6b34a47BfDF00ED0C0EAaB57Cde841Dc406) |
+| LendingMarket QQQ | `0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65` | [view](https://repo.sourcify.dev/4663/0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65) |
+| StockOracle GOOGL | `0xe9a85ff6d1fB76Ac2c6a312377F3F89B5FC7CA5C` | [view](https://repo.sourcify.dev/4663/0xe9a85ff6d1fB76Ac2c6a312377F3F89B5FC7CA5C) |
+| LendingMarket GOOGL | `0x8E5C541120E2B1F9a908cf21d106Acfd697002E3` | [view](https://repo.sourcify.dev/4663/0x8E5C541120E2B1F9a908cf21d106Acfd697002E3) |
+| StockOracle AMZN | `0x917944A698abfa202bDbbce4759ee5Bf8A215D1c` | [view](https://repo.sourcify.dev/4663/0x917944A698abfa202bDbbce4759ee5Bf8A215D1c) |
+| LendingMarket AMZN | `0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831` | [view](https://repo.sourcify.dev/4663/0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831) |
 
 ## Check it yourself
 

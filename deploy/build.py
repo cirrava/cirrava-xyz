@@ -17,7 +17,7 @@ DIST = ROOT / "dist"
 
 FILES = ["index.html", "docs.html", "404.html", "terms.html", "privacy.html", "robots.txt", "sitemap.xml",
          "art/monet-impression-sunrise.jpg", "art/turner-fighting-temeraire.jpg",
-         "app/index.html", "app/app.js",
+         "app/index.html", "app/app.js", "app/admin.html", "app/admin.js", "app/admin-artifacts.js",
          "art/tokens/nvda.svg", "art/tokens/spy.svg", "art/tokens/tsla.svg", "art/tokens/aapl.svg", "art/tokens/msft.svg", "art/tokens/qqq.svg", "art/tokens/googl.svg", "art/tokens/amzn.svg",
          "art/tokens/usdg.png", "art/tokens/robinhood-token.png",
          "favicon.ico", "favicon.svg", "favicon-32.png", "apple-touch-icon.png",
@@ -81,6 +81,13 @@ def main():
             v = hashlib.sha256(f.read_bytes()).hexdigest()[:10]
             html = html.replace(f'src="{js}"', f'src="{js}?v={v}"')
     app.write_text(html, encoding="utf-8")
+    adm = DIST / "app" / "admin.html"
+    if ship_dep:
+        h = adm.read_text(encoding="utf-8")
+        for js in ("admin.js", "admin-artifacts.js", "deployment.js"):
+            v = hashlib.sha256((DIST / "app" / js).read_bytes()).hexdigest()[:10]
+            h = h.replace(f'src="{js}"', f'src="{js}?v={v}"')
+        adm.write_text(h, encoding="utf-8")
 
     total = sum(p.stat().st_size for p in DIST.rglob("*") if p.is_file())
     print(f"dist/ ready: {sum(1 for p in DIST.rglob('*') if p.is_file())} files, {total / 1e6:.2f} MB")

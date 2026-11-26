@@ -14,7 +14,7 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Cirrava">
   <meta property="og:title" content="Cirrava | Lending market for Stock Tokens">
-  <meta property="og:description" content="Borrow USDG against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
+  <meta property="og:description" content="Borrow USDG against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL and AMZN Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
   <meta property="og:url" content="https://cirrava.xyz/">
   <meta property="og:image" content="https://cirrava.xyz/og.png">
   <meta property="og:image:type" content="image/png">
@@ -24,11 +24,11 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@Cirrava">
   <meta name="twitter:title" content="Cirrava | Lending market for Stock Tokens">
-  <meta name="twitter:description" content="Borrow USDG against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
+  <meta name="twitter:description" content="Borrow USDG against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL and AMZN Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
   <meta name="twitter:image" content="https://cirrava.xyz/og.png">
   <meta name="twitter:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
 <!-- meta:end -->
-<meta name="description" content="Borrow USDG against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
+<meta name="description" content="Borrow USDG against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL and AMZN Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
@@ -286,7 +286,7 @@ html.portal-features .close{color:#2B1C3F}
     <button class="x" data-close="newsCard" aria-label="Close">×</button>
     <span class="badge">LIVE</span>
     <h2>Cirrava is live on Robinhood Chain</h2>
-    <p>Borrow USDG against NVDA, SPY, TSLA or AAPL Stock Tokens, or deposit USDG into the Earn vault and earn what borrowers pay.</p>
+    <p>Borrow USDG against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL or AMZN Stock Tokens, or deposit USDG into the Earn vault and earn what borrowers pay.</p>
     <div class="row"><a class="mini" href="/docs/how">How it works ↗</a><a class="mini" href="/app/earn">Open app ↗</a></div>
   </section>
 </div>
@@ -332,6 +332,7 @@ const root=document.documentElement;
 
 /* ---------------- content ---------------- */
 const POSTS=[
+  {date:'26 Nov 2026',title:'Four new markets: MSFT, QQQ, GOOGL, AMZN',body:'Borrow USDG against Microsoft, Invesco QQQ, Alphabet and Amazon Stock Tokens. Eight isolated markets now share the USDG Earn vault.',art:0,href:'/docs/post-markets'},
   {date:'21 Nov 2026',title:'Cirrava is live on Robinhood Chain',body:'Four isolated markets (NVDA, SPY, TSLA, AAPL) and a USDG Earn vault, priced by Chainlink and aware of US market hours.',art:0,href:'/docs/post-launch'},
   {date:'21 Nov 2026',title:'What happens when the market closes',body:'Why borrowing and liquidations pause at the weekend while repaying, adding collateral and vault withdrawals stay open.',art:1,href:'/docs/post-hours'},
   {date:'21 Nov 2026',title:'Health factor, LTV and liquidation',body:'How much you can borrow against a Stock Token, and the price at which a position becomes liquidatable.',art:2,href:'/docs/post-health'},
@@ -345,9 +346,9 @@ const FEATURES=[
   {tag:'Safety',title:'Non-Custodial',body:'Assets sit in smart contracts, never with a team or custodian, and every move is visible on-chain.',href:'/docs/contracts',cta:'View the contracts'},
 ];
 const PHASES=[
-  {phase:'PHASE 01 · LIVE',title:'Mainnet',sub:'Live on Robinhood Chain since 21 Nov 2026 — NVDA, SPY, TSLA and AAPL markets with the USDG Earn vault',side:'right'},
+  {phase:'PHASE 01 · LIVE',title:'Mainnet',sub:'Live on Robinhood Chain since 21 Nov 2026 — eight Stock Token markets (NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL, AMZN) with the USDG Earn vault',side:'right'},
   {phase:'PHASE 02 · LIVE',title:'$CIRRAVA',sub:'The $CIRRAVA token is live on Robinhood Chain · 0x0267…446A',side:'left'},
-  {phase:'PHASE 03 · LATER',title:'Security & markets',sub:'Independent audit, Safe multisig ownership, then MSFT, QQQ, GOOGL, AMZN and higher caps',side:'right'},
+  {phase:'PHASE 03 · NEXT',title:'Security & caps',sub:'Independent audit and Safe multisig ownership, then higher market caps',side:'right'},
 ];
 
 /* ---------------- blog card ---------------- */

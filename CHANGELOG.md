@@ -2,6 +2,13 @@
 
 Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 
+## 2026-11-26 — Four new markets
+
+- Added MSFT, QQQ, GOOGL and AMZN markets to the live Earn vault (cap 10,000 USDG each); the vault now
+  supplies eight markets. Same contract code as the first four, verified on Sourcify (exact match).
+- Owner admin page (/app/admin) to add markets with a browser wallet, and `protocol/scripts/add-markets.js`
+  for the command line.
+
 ## 2026-11-26 — Legal pages
 
 - Added Terms of Use (/terms) and Privacy Policy (/privacy), linked from the site footer, docs and app.

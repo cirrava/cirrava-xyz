@@ -14,13 +14,13 @@ IMAGE_ALT = "Cirrava, lending market for Stock Tokens, live on Robinhood Chain"
 
 PAGES = {
     "index.html": ("Cirrava | Lending market for Stock Tokens",
-                   "Borrow USDG against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.",
+                   "Borrow USDG against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL and AMZN Stock Tokens on Robinhood Chain, or lend USDG in the Earn vault. Isolated markets that follow US market hours.",
                    "/"),
     "docs.html": ("Cirrava Docs",
                   "How Cirrava works: isolated Stock Token markets, the USDG Earn vault, market hours, risks and every contract address on Robinhood Chain.",
                   "/docs"),
     "app/index.html": ("Cirrava App | Lend and borrow against Stock Tokens",
-                       "Earn on USDG or borrow against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain. Live prices, market hours and positions.",
+                       "Earn on USDG or borrow against NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL and AMZN Stock Tokens on Robinhood Chain. Live prices, market hours and positions.",
                        "/app/earn"),
     "terms.html": ("Terms of Use | Cirrava",
                    "The terms for using cirrava.xyz, the Cirrava app and the Cirrava contracts on Robinhood Chain.",

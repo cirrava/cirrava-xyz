@@ -2,7 +2,7 @@
 
 Borrow against Stock Tokens without selling them. Cirrava is a lending market on
 [Robinhood Chain](https://robinhoodchain.blockscout.com) (chain ID 4663): post a Robinhood Stock Token
-(NVDA, SPY, TSLA, AAPL) as collateral and borrow USDG, or deposit USDG into the Earn vault and earn
+(NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL, AMZN) as collateral and borrow USDG, or deposit USDG into the Earn vault and earn
 what borrowers pay. Borrowing and liquidations follow US market hours on-chain: they pause while the
 exchange is closed, and repaying, adding collateral and vault withdrawals never do.
 
@@ -25,7 +25,7 @@ exchange is closed, and repaying, adding collateral and vault withdrawals never 
 | `index.html`, `docs.html`, [`app/`](app) | The website, docs and dApp served at cirrava.xyz |
 | [`deploy/`](deploy) | Static build and nginx config for the site |
 
-## Live contracts (Robinhood Chain mainnet, deployed 21 Nov 2026)
+## Live contracts (Robinhood Chain mainnet; core deployed 21 Nov 2026, MSFT/QQQ/GOOGL/AMZN added 26 Nov 2026)
 
 | Contract | Address |
 |---|---|
@@ -34,13 +34,17 @@ exchange is closed, and repaying, adding collateral and vault withdrawals never 
 | LendingMarket SPY/USDG | [`0x13EFa3249eA871B0f3fB014386312061D3248620`](https://robinhoodchain.blockscout.com/address/0x13EFa3249eA871B0f3fB014386312061D3248620) |
 | LendingMarket TSLA/USDG | [`0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971`](https://robinhoodchain.blockscout.com/address/0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971) |
 | LendingMarket AAPL/USDG | [`0xf8452a202b36dcDBb5da1b45A5fB1b5653295886`](https://robinhoodchain.blockscout.com/address/0xf8452a202b36dcDBb5da1b45A5fB1b5653295886) |
+| LendingMarket MSFT/USDG | [`0xd60213409B692911F34f72FeF15DFa160a3216ec`](https://robinhoodchain.blockscout.com/address/0xd60213409B692911F34f72FeF15DFa160a3216ec) |
+| LendingMarket QQQ/USDG | [`0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65`](https://robinhoodchain.blockscout.com/address/0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65) |
+| LendingMarket GOOGL/USDG | [`0x8E5C541120E2B1F9a908cf21d106Acfd697002E3`](https://robinhoodchain.blockscout.com/address/0x8E5C541120E2B1F9a908cf21d106Acfd697002E3) |
+| LendingMarket AMZN/USDG | [`0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831`](https://robinhoodchain.blockscout.com/address/0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831) |
 | MarketCalendar | [`0x13C77954bE518078Bb88a3A144A06246484Db946`](https://robinhoodchain.blockscout.com/address/0x13C77954bE518078Bb88a3A144A06246484Db946) |
 | InterestRateModel | [`0x667db67029E681420Ba684a073b7Eb9E52103Cb3`](https://robinhoodchain.blockscout.com/address/0x667db67029E681420Ba684a073b7Eb9E52103Cb3) |
 | StockOracle USDG | [`0xAa2cFF138aeAB9d204eae2406cE1E295deFa22CC`](https://robinhoodchain.blockscout.com/address/0xAa2cFF138aeAB9d204eae2406cE1E295deFa22CC) |
 | Owner & treasury | [`0xa319B076571a93C345Eb61Ec5131364dE81D0BA1`](https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1) |
 | $CIRRAVA token | [`0x0267939aCc8C236e0eB2bd425c026c9180e7446A`](https://robinhoodchain.blockscout.com/address/0x0267939aCc8C236e0eB2bd425c026c9180e7446A) |
 
-**Source verified:** all 12 contracts are an exact match on [Sourcify](https://repo.sourcify.dev/4663/0xfF2F860F2eBFe6E615f8f27563f2684334D5de24)
+**Source verified:** all 20 contracts are an exact match on [Sourcify](https://repo.sourcify.dev/4663/0xfF2F860F2eBFe6E615f8f27563f2684334D5de24)
 (chain 4663). [`protocol/verification`](protocol/verification) has the standard-JSON input and a script that
 compares the live bytecode with this source.
 

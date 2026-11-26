@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /app/admin
 
 Sitemap: https://cirrava.xyz/sitemap.xml

@@ -24,3 +24,4 @@ Thumbs.db
 
 # Internal ops notes (server details)
 deploy/PANDUAN-VPS.md
+protocol/deployments/admin-local-markets.json
