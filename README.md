@@ -40,6 +40,10 @@ exchange is closed, and repaying, adding collateral and vault withdrawals never 
 | Owner & treasury | [`0xa319B076571a93C345Eb61Ec5131364dE81D0BA1`](https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1) |
 | $CIRRAVA token | [`0x0267939aCc8C236e0eB2bd425c026c9180e7446A`](https://robinhoodchain.blockscout.com/address/0x0267939aCc8C236e0eB2bd425c026c9180e7446A) |
 
+**Source verified:** all 12 contracts are an exact match on [Sourcify](https://repo.sourcify.dev/4663/0xfF2F860F2eBFe6E615f8f27563f2684334D5de24)
+(chain 4663). [`protocol/verification`](protocol/verification) has the standard-JSON input and a script that
+compares the live bytecode with this source.
+
 Per-market Stock Token, Chainlink feed and oracle addresses are in
 [`protocol/deployments/robinhood.json`](protocol/deployments/robinhood.json).
 
