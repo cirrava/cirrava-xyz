@@ -54,7 +54,7 @@ const ago = (ts) => {
 };
 // Token logos. Stock Tokens show the company's mark plus the official Robinhood Token icon (the icon
 // their on-chain token metadata points to); USDG uses its own official icon.
-const ICONS = { NVDA: "nvda.svg", SPY: "spy.svg", TSLA: "tsla.svg", AAPL: "aapl.svg", USDG: "usdg.png" };
+const ICONS = { NVDA: "nvda.svg", SPY: "spy.svg", TSLA: "tsla.svg", AAPL: "aapl.svg", MSFT: "msft.svg", QQQ: "qqq.svg", GOOGL: "googl.svg", AMZN: "amzn.svg", USDG: "usdg.png" };
 const icon = (sym) => {
   const f = ICONS[sym];
   if (!f) return `<span class="ic">${sym}</span>`;

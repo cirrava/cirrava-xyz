@@ -18,7 +18,7 @@ DIST = ROOT / "dist"
 FILES = ["index.html", "docs.html", "404.html", "terms.html", "privacy.html", "robots.txt", "sitemap.xml",
          "art/monet-impression-sunrise.jpg", "art/turner-fighting-temeraire.jpg",
          "app/index.html", "app/app.js",
-         "art/tokens/nvda.svg", "art/tokens/spy.svg", "art/tokens/tsla.svg", "art/tokens/aapl.svg",
+         "art/tokens/nvda.svg", "art/tokens/spy.svg", "art/tokens/tsla.svg", "art/tokens/aapl.svg", "art/tokens/msft.svg", "art/tokens/qqq.svg", "art/tokens/googl.svg", "art/tokens/amzn.svg",
          "art/tokens/usdg.png", "art/tokens/robinhood-token.png",
          "favicon.ico", "favicon.svg", "favicon-32.png", "apple-touch-icon.png",
          "icon-192.png", "icon-512.png", "site.webmanifest", "og.png"]

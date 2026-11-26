@@ -12,4 +12,13 @@ module.exports = {
     { symbol: "TSLA", name: "Tesla", token: "0x322F0929c4625eD5bAd873c95208D54E1c003b2d", feed: "0x4A1166a659A55625345e9515b32adECea5547C38", ltv: 0.45, lt: 0.5 },
     { symbol: "AAPL", name: "Apple", token: "0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9", feed: "0x6B22A786bAa607d76728168703a39Ea9C99f2cD0", ltv: 0.6, lt: 0.65 },
   ],
+  // Phase 03 markets, added to the live vault by scripts/add-markets.js. Each token shares the official
+  // Robinhood Stock Token deployer (0x4783…C046) and beacon implementation with the tokens above; each
+  // feed is a Chainlink EACAggregatorProxy from the same deployer and owner as the feeds above.
+  newMarkets: [
+    { symbol: "MSFT", name: "Microsoft", token: "0xe93237C50D904957Cf27E7B1133b510C669c2e74", feed: "0x45C3C877C15E6BA2EBB19eA114Ea508d14C1Af2E", ltv: 0.6, lt: 0.65 },
+    { symbol: "QQQ", name: "Invesco QQQ", token: "0xD5f3879160bc7c32ebb4dC785F8a4F505888de68", feed: "0x80901d846d5D7B030F26B480776EE3b29374C2ae", ltv: 0.7, lt: 0.75 },
+    { symbol: "GOOGL", name: "Alphabet Class A", token: "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3", feed: "0xF6f373a037c30F0e5010d854385cA89185AE638b", ltv: 0.6, lt: 0.65 },
+    { symbol: "AMZN", name: "Amazon", token: "0x12f190a9F9d7D37a250758b26824B97CE941bF54", feed: "0xD5a1508ceD74c084eBf3cBe853e2C968fB2a651C", ltv: 0.6, lt: 0.65 },
+  ],
 };
