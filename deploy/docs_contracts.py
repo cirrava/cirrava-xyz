@@ -74,7 +74,7 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
   <p>Everything that reduces risk stays available; everything that takes a new position on a frozen price does not. After the open, a price published before the open still counts as closed until Chainlink publishes a fresh in-session price.</p>
 
   <h2 id="risks">Risks</h2>
-  <div class="note">Read this before you deposit or borrow. Cirrava's contracts have not been audited. Deposits and loans use real assets and can be lost.</div>
+  <div class="note">Read this before you deposit or borrow. Cirrava's contracts have not been audited. Deposits and loans use real assets and can be lost. The full <a href="/risk">Risk Disclosure</a> covers every risk in detail.</div>
   <h3>Admin key</h3><p>One wallet currently owns every contract. It can change risk parameters, fees and the interest-rate model, pause a market, add markets to the Earn vault, set their caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable, and adding a market lets that wallet route vault deposits to it, so a lost or stolen admin key puts deposits at risk. Moving ownership to a multisig is on the roadmap.</p>
   <h3>No upgrades</h3><p>The contracts are not upgradeable proxies: the code at each address is fixed. A fix would mean deploying new contracts.</p>
   <h3>Oracle dependencies</h3><p>Positions are priced from Chainlink's feeds on Robinhood Chain. A paused, stale or wrong feed stops or misprices borrowing and liquidations.</p>

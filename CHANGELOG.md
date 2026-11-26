@@ -2,6 +2,11 @@
 
 Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 
+## 2026-11-26 — Legal pages
+
+- Added Terms of Use (/terms), Privacy Policy (/privacy) and Risk Disclosure (/risk), linked from the
+  site footer, docs and app.
+
 ## 2026-11-26 — Source published
 
 - Published the contracts, tests, scripts, website and app source on GitHub.

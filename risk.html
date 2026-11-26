@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Risk Disclosure | Cirrava</title>
+<!-- meta:start -->
+  <link rel="canonical" href="https://cirrava.xyz/risk">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#E0664A">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cirrava">
+  <meta property="og:title" content="Risk Disclosure | Cirrava">
+  <meta property="og:description" content="The risks of lending and borrowing on Cirrava: unaudited contracts, admin key, liquidations, market-hours price gaps, oracles and more.">
+  <meta property="og:url" content="https://cirrava.xyz/risk">
+  <meta property="og:image" content="https://cirrava.xyz/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Cirrava">
+  <meta name="twitter:title" content="Risk Disclosure | Cirrava">
+  <meta name="twitter:description" content="The risks of lending and borrowing on Cirrava: unaudited contracts, admin key, liquidations, market-hours price gaps, oracles and more.">
+  <meta name="twitter:image" content="https://cirrava.xyz/og.png">
+  <meta name="twitter:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+<!-- meta:end -->
+<meta name="description" content="The risks of lending and borrowing on Cirrava: unaudited contracts, admin key, liquidations, market-hours price gaps, oracles and more.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFBF8;--fg:#24182F;--muted:#6E6175;--line:#EFE3DC;--card:#fff;--accent:#E0664A;--code:#F7EEE9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120B22;--fg:#F1EAFB;--muted:#A99CBD;--line:#2A2140;--card:#1A1230;--accent:#F49A7A;--code:#211836}}
+:root[data-theme="dark"]{--bg:#120B22;--fg:#F1EAFB;--muted:#A99CBD;--line:#2A2140;--card:#1A1230;--accent:#F49A7A;--code:#211836}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.7 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+main a{color:var(--accent)}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:22px;padding:14px 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px)}
+header .brand{display:flex;align-items:center;gap:8px;font-weight:600;text-decoration:none}
+header .brand svg{width:20px;height:20px}
+header nav{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+header nav a{text-decoration:none}header nav a:hover{color:var(--fg)}
+.wrap{max-width:760px;margin:0 auto;padding:44px 24px 110px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:30px}
+.tabs a{font-size:13px;padding:6px 14px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted);background:var(--card)}
+.tabs a:hover{color:var(--fg);border-color:var(--accent)}
+.tabs a[aria-current]{color:var(--bg);background:var(--accent);border-color:var(--accent)}
+h1{font-family:"Bodoni Moda",serif;font-weight:500;font-size:46px;line-height:1.05}
+.updated{color:var(--muted);font-size:13px;margin:10px 0 26px}
+h2{font-family:"Bodoni Moda",serif;font-weight:500;font-size:24px;margin:44px 0 8px;scroll-margin-top:80px}
+p{margin:10px 0}
+ul{margin:10px 0 10px 22px}li{margin:6px 0}
+.lead{font-size:17px;color:var(--muted)}
+code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+.note{border-left:3px solid var(--accent);padding:10px 14px;background:var(--code);border-radius:0 8px 8px 0;margin:18px 0;font-size:14px}
+footer{border-top:1px solid var(--line);padding:22px 24px;text-align:center;font-size:13px;color:var(--muted)}
+footer a{margin:0 8px;text-decoration:none}footer a:hover{color:var(--fg)}
+@media (max-width:640px){header{padding:12px 18px;gap:14px}header nav{gap:12px}.wrap{padding:30px 18px 80px}h1{font-size:36px}}
+</style>
+<script>try{var t=localStorage.getItem('cirrava-theme');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}</script>
+</head>
+<body>
+<header>
+  <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M23.5 9.2A9.5 9.5 0 1 0 23.5 22.8" fill="none" stroke="#E0664A" stroke-width="5.2" stroke-linecap="round"/><circle cx="25.2" cy="16" r="2.6" fill="#E0664A"/></svg>Cirrava</a>
+  <nav><a href="/docs">Docs</a><a href="/app/earn">App</a><a href="https://x.com/Cirrava" target="_blank" rel="noopener me">X ↗</a></nav>
+</header>
+<div class="wrap">
+  <nav class="tabs" aria-label="Legal"><a href="/terms">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/risk" aria-current="page">Risk Disclosure</a></nav>
+  <main>
+  <h1>Risk Disclosure</h1>
+  <p class="updated">Last updated 26 November 2026</p>
+<p class="lead">Lending and borrowing on Cirrava involves serious risk. You can lose some or all of what you deposit or post as collateral. Only use money you can afford to lose, and read this whole page first.</p>
+<div class="note">Cirrava's contracts are live on mainnet with real assets and <b>have not been audited</b>. A review is not a guarantee, and neither is public source code.</div>
+
+<h2 id="contracts">1. Smart-contract risk</h2>
+<p>The contracts may contain bugs or design flaws that let someone take funds, lock them, or misprice positions. The code is <a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">public</a> and verified, which lets anyone check it, including attackers. The contracts are not upgradeable: a fix means deploying new contracts and moving to them, and funds in the old ones may be affected in the meantime.</p>
+
+<h2 id="admin">2. Admin key risk</h2>
+<p>One wallet owns every contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable at once, and adding a market lets that wallet route vault deposits to it. If that key is lost, stolen or misused, deposits are at risk. Moving ownership to a multisig is planned but not done.</p>
+
+<h2 id="liquidation">3. Liquidation risk</h2>
+<p>If the value of your debt rises above your collateral value times the market's liquidation threshold, anyone can repay part of your debt and take your collateral at a 5% discount. You lose that collateral. Prices can move faster than you can react, and liquidations can happen while you are not watching.</p>
+
+<h2 id="hours">4. Market hours and price gaps</h2>
+<p>Stock Token prices follow US stock markets. While the market is closed (nights, weekends, holidays) the price feed stops, and borrowing and liquidations pause. When the market reopens, the price can jump. A position can open the next session already liquidatable, and liquidation can then take more than a normal move would. Market-hours rules are enforced by an on-chain calendar that may contain mistakes.</p>
+
+<h2 id="oracle">5. Oracle risk</h2>
+<p>Positions are priced from Chainlink feeds on Robinhood Chain. A feed that is delayed, paused, stale, manipulated or simply wrong can block borrowing, block liquidations or cause unfair ones. Cirrava does not control these feeds.</p>
+
+<h2 id="liquidity">6. Liquidity and withdrawal risk</h2>
+<p>Earn vault deposits are lent to borrowers. You can only withdraw USDG that is not lent out. If markets are heavily borrowed, a withdrawal may have to wait until borrowers repay or are liquidated. Interest rates change with utilization and can rise steeply for borrowers.</p>
+
+<h2 id="baddebt">7. Bad debt</h2>
+<p>If collateral loses value too fast to be liquidated in time, or liquidations pause during a price move, a position can end up owing more than its collateral is worth. That shortfall is written off and borne by Earn vault depositors.</p>
+
+<h2 id="assets">8. Stock Token and USDG risk</h2>
+<p>Stock Tokens are issued by third parties, not by Cirrava, and are not shares: holding one does not give you the rights of a shareholder. Their value depends on the issuer, its custody arrangements and its ability to keep the token tracking the stock. Issuers may pause, freeze, restrict or stop supporting their tokens, and regulators may act against them. USDG is a stablecoin issued by a third party; it can lose its peg, or be frozen or restricted by its issuer.</p>
+
+<h2 id="chain">9. Network risk</h2>
+<p>Robinhood Chain may slow down, halt, reorganise or censor transactions, and its fees can change. If it is unavailable, you may be unable to repay or add collateral while liquidations become possible once it resumes.</p>
+
+<h2 id="you">10. Wallet and scam risk</h2>
+<p>If your wallet or seed phrase is compromised, your assets can be taken and nobody can reverse that. Scammers impersonate projects with fake websites, fake tokens and direct messages. Only use cirrava.xyz and the addresses in the <a href="/docs/contracts">docs</a>. Cirrava will never ask for your keys or for payment.</p>
+
+<h2 id="token">11. $CIRRAVA token risk</h2>
+<p>$CIRRAVA is not connected to the lending protocol and gives no claim on fees, revenue or the team. Its price can be extremely volatile and can fall to zero, and its liquidity can disappear.</p>
+
+<h2 id="legal">12. Legal and tax risk</h2>
+<p>Rules for tokenised securities, stablecoins and decentralised lending are unsettled and differ by country. A change in law or enforcement could restrict your access to Cirrava, to Stock Tokens or to USDG, or create tax consequences for you.</p>
+
+<p style="margin-top:40px">More detail on how the protocol behaves is in the <a href="/docs">docs</a>. By using Cirrava you accept these risks and the <a href="/terms">Terms of Use</a>.</p>
+  </main>
+</div>
+<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/risk">Risks</a><a href="/docs">Docs</a><a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a></footer>
+</body>
+</html>

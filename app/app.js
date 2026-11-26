@@ -149,9 +149,9 @@ if (LOCAL) {
   $("demoTag").title = "Test tokens on a test network, priced by real market data";
   $("demoTag").hidden = false;
 }
-document.querySelector("footer").textContent = LOCAL
-  ? "Cirrava is unaudited software running on a test network with test tokens. Prices are real market quotes pushed by a keeper; nothing here is an offer, solicitation or recommendation to buy or sell any security."
-  : "Cirrava is unaudited, experimental software on Robinhood Chain. Deposits and loans use real assets and can be lost. Stock Tokens are tokenised debt securities and are not offered to persons in the United States, Canada, the United Kingdom or Switzerland. Nothing here is an offer, solicitation or recommendation to buy or sell any security.";
+// The footer in index.html is the mainnet text (with legal links); only a local test chain replaces it.
+if (LOCAL) document.querySelector("footer").textContent =
+  "Cirrava is unaudited software running on a test network with test tokens. Prices are real market quotes pushed by a keeper; nothing here is an offer, solicitation or recommendation to buy or sell any security.";
 if (!LOCAL) document.querySelectorAll("[data-faucet]").forEach((b) => b.remove()); // no faucets on real networks
 
 let signer = null;

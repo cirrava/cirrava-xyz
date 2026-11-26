@@ -22,6 +22,15 @@ PAGES = {
     "app/index.html": ("Cirrava App | Lend and borrow against Stock Tokens",
                        "Earn on USDG or borrow against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain. Live prices, market hours and positions.",
                        "/app/earn"),
+    "terms.html": ("Terms of Use | Cirrava",
+                   "The terms for using cirrava.xyz, the Cirrava app and the Cirrava contracts on Robinhood Chain.",
+                   "/terms"),
+    "privacy.html": ("Privacy Policy | Cirrava",
+                     "No accounts, no tracking cookies, no analytics: what little data cirrava.xyz processes, and by whom.",
+                     "/privacy"),
+    "risk.html": ("Risk Disclosure | Cirrava",
+                  "The risks of lending and borrowing on Cirrava: unaudited contracts, admin key, liquidations, market-hours price gaps, oracles and more.",
+                  "/risk"),
     "404.html": ("Page not found | Cirrava", None, None),
 }
 

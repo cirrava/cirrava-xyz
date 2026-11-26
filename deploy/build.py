@@ -15,7 +15,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
 
-FILES = ["index.html", "docs.html", "404.html", "robots.txt", "sitemap.xml",
+FILES = ["index.html", "docs.html", "404.html", "terms.html", "privacy.html", "risk.html", "robots.txt", "sitemap.xml",
          "art/monet-impression-sunrise.jpg", "art/turner-fighting-temeraire.jpg",
          "app/index.html", "app/app.js",
          "art/tokens/nvda.svg", "art/tokens/spy.svg", "art/tokens/tsla.svg", "art/tokens/aapl.svg",
