@@ -1,0 +1,66 @@
+{
+  "network": "robinhood",
+  "chainId": 4663,
+  "rpcUrl": "https://rpc.mainnet.chain.robinhood.com",
+  "explorer": "https://robinhoodchain.blockscout.com",
+  "deployedAt": "2026-11-21T13:52:19.003Z",
+  "deployer": "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1",
+  "treasury": "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1",
+  "demo247": false,
+  "usdg": {
+    "address": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
+    "feed": "0x61B7e5650328764B076A108EFF5fa7282a1B9aD2",
+    "oracle": "0xAa2cFF138aeAB9d204eae2406cE1E295deFa22CC",
+    "decimals": 6
+  },
+  "calendar": "0x13C77954bE518078Bb88a3A144A06246484Db946",
+  "irm": "0x667db67029E681420Ba684a073b7Eb9E52103Cb3",
+  "vault": "0xfF2F860F2eBFe6E615f8f27563f2684334D5de24",
+  "capPerMarket": "10000.0",
+  "markets": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "decimals": 18,
+      "token": "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
+      "feed": "0x379EC4f7C378F34a1B47E4F3cbeBCbAC3E8E9F15",
+      "oracle": "0x14bD0ec2B8A8e4023D6C663ee600c54BC155cB04",
+      "market": "0x95477C96CB4dFA66b2baCA583e09eb676FEe0aE4",
+      "ltv": 0.6,
+      "lt": 0.65
+    },
+    {
+      "symbol": "SPY",
+      "name": "SPDR S&P 500 ETF",
+      "decimals": 18,
+      "token": "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C",
+      "feed": "0x319724394D3A0e3669269846abE664Cd621f9f6A",
+      "oracle": "0x1963ee19E294B9EBc681092aE116EC51e9A7d976",
+      "market": "0x13EFa3249eA871B0f3fB014386312061D3248620",
+      "ltv": 0.7,
+      "lt": 0.75
+    },
+    {
+      "symbol": "TSLA",
+      "name": "Tesla",
+      "decimals": 18,
+      "token": "0x322F0929c4625eD5bAd873c95208D54E1c003b2d",
+      "feed": "0x4A1166a659A55625345e9515b32adECea5547C38",
+      "oracle": "0x7db44E20D0624371919535130CEEB8eB9763655B",
+      "market": "0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971",
+      "ltv": 0.45,
+      "lt": 0.5
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "decimals": 18,
+      "token": "0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9",
+      "feed": "0x6B22A786bAa607d76728168703a39Ea9C99f2cD0",
+      "oracle": "0x72AC37a2F20cA55892e8f8fDb4758068F5d12AC8",
+      "market": "0xf8452a202b36dcDBb5da1b45A5fB1b5653295886",
+      "ltv": 0.6,
+      "lt": 0.65
+    }
+  ]
+}

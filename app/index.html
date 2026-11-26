@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en" data-theme="day">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cirrava App | Lend and borrow against Stock Tokens</title>
+<!-- meta:start -->
+  <link rel="canonical" href="https://cirrava.xyz/app/earn">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#E0664A">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cirrava">
+  <meta property="og:title" content="Cirrava App | Lend and borrow against Stock Tokens">
+  <meta property="og:description" content="Earn on USDG or borrow against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain. Live prices, market hours and positions.">
+  <meta property="og:url" content="https://cirrava.xyz/app/earn">
+  <meta property="og:image" content="https://cirrava.xyz/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Cirrava">
+  <meta name="twitter:title" content="Cirrava App | Lend and borrow against Stock Tokens">
+  <meta name="twitter:description" content="Earn on USDG or borrow against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain. Live prices, market hours and positions.">
+  <meta name="twitter:image" content="https://cirrava.xyz/og.png">
+  <meta name="twitter:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+<!-- meta:end -->
+<meta name="description" content="Earn on USDG or borrow against NVDA, SPY, TSLA and AAPL Stock Tokens on Robinhood Chain. Live prices, market hours and positions.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--sky:#E0664A;--sky2:#C9563D;--ink:#fff;--muted:rgba(255,255,255,.72);--glass:rgba(255,255,255,.13);--glass2:rgba(255,255,255,.22);--line:rgba(255,255,255,.38);
+  --ok:#C9F2D6;--warn:#FFE3A6;--bad:#FFC4C4;--shadow:rgba(110,30,15,.18);--serif:"Bodoni Moda",Didot,serif;--sans:"Inter Tight",system-ui,sans-serif;--track:#F49A7A}
+:root[data-theme="night"]{--sky:#120B22;--sky2:#1B1233;--muted:rgba(240,232,255,.65);--glass:rgba(255,255,255,.06);--glass2:rgba(255,255,255,.11);--line:rgba(220,205,255,.24);--shadow:rgba(0,0,0,.4);--track:#2A1E45}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--sky);color:var(--ink);font:14px/1.5 var(--sans);-webkit-font-smoothing:antialiased;transition:background .6s}
+body{min-height:100vh;background:radial-gradient(120% 80% at 80% -10%,rgba(255,255,255,.14),transparent 60%),var(--sky)}
+a{color:inherit}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.45}
+.frame{position:fixed;inset:10px;border:1.5px solid rgba(255,255,255,.55);border-radius:3px;pointer-events:none;z-index:50}
+.shell{display:grid;grid-template-columns:220px 1fr;min-height:100vh}
+aside{padding:28px 18px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:9px;font-family:var(--serif);font-size:22px;text-decoration:none;margin:0 8px 26px}
+.brand svg{width:24px;height:24px}
+.nav{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;font-weight:500;text-decoration:none;opacity:.8}
+.nav:hover{background:var(--glass);opacity:1}
+.nav.on{background:var(--glass2);opacity:1;box-shadow:inset 0 0 0 1px var(--line)}
+.nav svg{width:16px;height:16px}
+.aside-foot{margin-top:auto;font-size:11.5px;color:var(--muted);padding:0 10px}
+.aside-foot a{display:block;margin-top:4px}
+main{padding:24px 34px 60px;max-width:1180px;width:100%}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.top .sp{flex:1}
+.pill{height:36px;padding:0 16px;border-radius:999px;display:inline-flex;align-items:center;gap:8px;background:var(--glass2);border:1px solid var(--line);font-weight:500;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);transition:background .2s}
+.pill:hover:not(:disabled){background:rgba(255,255,255,.32)}
+.pill.solid{background:#fff;color:#7A2E1E;border-color:#fff}
+:root[data-theme="night"] .pill.solid{background:#EDE4FF;color:#21153B}
+.toggle{width:58px;height:32px;border-radius:999px;position:relative;background:var(--track);border:1px solid var(--line)}
+.toggle i{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#FFF4B8,#FFC94A 60%,#F5A623);transition:transform .45s cubic-bezier(.6,-.2,.3,1.3)}
+:root[data-theme="night"] .toggle i{transform:translateX(26px);background:radial-gradient(circle at 35% 35%,#F4EEFF,#CFC3EA 65%,#A99BCB)}
+.mkt{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;padding:6px 12px;border-radius:999px;background:var(--glass);border:1px solid var(--line)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--warn);box-shadow:0 0 0 3px rgba(255,227,166,.25)}
+.dot.open{background:#7BE39B;box-shadow:0 0 0 3px rgba(123,227,155,.25)}
+h1{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.05;margin:6px 0 4px}
+.sub{color:var(--muted);max-width:640px}
+.grid{display:grid;gap:14px}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g2{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr)}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:16px;padding:18px 20px;backdrop-filter:blur(16px) saturate(1.2);-webkit-backdrop-filter:blur(16px) saturate(1.2);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 12px 34px var(--shadow)}
+.k{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.v{font-family:var(--serif);font-size:28px;font-weight:500;margin-top:4px;font-variant-numeric:tabular-nums}
+.v small{font-family:var(--sans);font-size:13px;color:var(--muted);margin-left:4px}
+.section{margin-top:26px}
+.section h2{font-family:var(--serif);font-weight:500;font-size:22px;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:500;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:12px 10px;border-bottom:1px solid rgba(255,255,255,.12)}
+tr.sel td{background:rgba(255,255,255,.1)}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:rgba(255,255,255,.07)}
+.asset{display:flex;align-items:center;gap:10px;font-weight:600}
+.asset .ic{position:relative;flex:none;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;background:#fff;color:#7A2E1E;
+  box-shadow:0 2px 8px rgba(80,20,10,.18),inset 0 0 0 1px rgba(0,0,0,.06)}
+.asset .ic .mk{width:58%;height:58%;object-fit:contain;display:block}
+.asset .ic-nvda .mk{width:100%;height:100%;border-radius:50%;object-fit:cover}
+.asset .ic-usdg .mk{width:100%;height:100%;border-radius:50%}
+.asset .ic .rh{position:absolute;right:-3px;bottom:-3px;width:14px;height:14px;border-radius:50%;box-shadow:0 0 0 2px var(--sky)}
+.asset span{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;padding:3px 9px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.badge.Fresh{background:rgba(123,227,155,.18)}
+.badge.MarketClosed{background:rgba(255,227,166,.18)}
+.badge.Stale,.badge.Invalid,.badge.Paused{background:rgba(255,160,160,.22)}
+.tabs{display:flex;gap:4px;background:rgba(0,0,0,.1);padding:4px;border-radius:12px;margin-bottom:14px}
+.tabs button{flex:1;padding:8px 6px;border-radius:9px;font-weight:500;font-size:13px;opacity:.75}
+.tabs button.on{background:var(--glass2);opacity:1;box-shadow:inset 0 0 0 1px var(--line)}
+.field{display:flex;align-items:center;gap:8px;background:rgba(0,0,0,.12);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.field input{flex:1;min-width:0;background:none;border:0;outline:0;color:inherit;font:500 22px var(--sans);font-variant-numeric:tabular-nums}
+.field input::placeholder{color:rgba(255,255,255,.45)}
+.field .max{font-size:11px;letter-spacing:.1em;padding:4px 9px;border-radius:999px;border:1px solid var(--line)}
+.field .sym{font-weight:600}
+.row{display:flex;justify-content:space-between;gap:10px;font-size:13px;margin-top:9px;color:var(--muted)}
+.row b{color:var(--ink);font-weight:500;font-variant-numeric:tabular-nums}
+.go{width:100%;margin-top:14px;height:46px;border-radius:12px;background:#fff;color:#7A2E1E;font-weight:600;font-size:15px}
+:root[data-theme="night"] .go{background:#EDE4FF;color:#21153B}
+.note{font-size:12.5px;margin-top:10px;padding:9px 12px;border-radius:10px;background:rgba(255,227,166,.16);border:1px solid rgba(255,227,166,.4)}
+.hf{height:8px;border-radius:999px;background:rgba(255,255,255,.16);overflow:hidden;margin-top:8px}
+.hf i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#FF8A80,#FFE3A6 45%,#7BE39B);transition:width .4s}
+.view{display:none}.view.on{display:block}
+[hidden]{display:none!important}
+body.notlive .view.on,body.notlive .nav[data-view]{display:none}
+.empty{color:var(--muted);padding:16px 4px}
+.toast{position:fixed;right:22px;bottom:22px;z-index:60;max-width:380px;padding:12px 16px;border-radius:12px;background:rgba(30,15,25,.88);color:#fff;font-size:13px;
+  transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.on{transform:none;opacity:1}
+.toast.err{background:rgba(140,20,30,.92)}
+.faucet{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.mini{height:30px;padding:0 12px;border-radius:999px;font-size:12px;background:var(--glass2);border:1px solid var(--line)}
+.mini:hover:not(:disabled){background:rgba(255,255,255,.32)}
+.demo{font-size:11px;letter-spacing:.12em;padding:3px 8px;border-radius:999px;background:rgba(0,0,0,.18);border:1px solid var(--line)}
+footer{margin-top:40px;font-size:11.5px;color:var(--muted);max-width:760px}
+.offline{padding:28px}
+/* grid/flex children may shrink below their content width (prevents sideways scrolling on phones) */
+.shell>*,main,.card,.grid>*{min-width:0}
+@media (max-width:900px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  aside{position:static;height:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;padding:18px 16px 0}
+  .brand{grid-column:1/-1;margin:0 0 6px}
+  .nav{justify-content:center;padding:9px 4px;font-size:13px;gap:6px}
+  .aside-foot{display:none}
+  main{padding:16px 16px 50px}
+  .g3,.g2{grid-template-columns:minmax(0,1fr)}
+  h1{font-size:32px}
+  .hide-m{display:none}
+  .card{overflow-x:auto}
+  th,td{padding:10px 6px}
+  .top{gap:8px}
+}
+@media (max-width:400px){.nav svg{display:none}.v{font-size:24px}}
+</style>
+</head>
+<body>
+<div class="frame"></div>
+<div class="shell">
+  <aside>
+    <a class="brand" href="/"><svg viewBox="0 0 32 32"><path d="M23.5 9.2A9.5 9.5 0 1 0 23.5 22.8" fill="none" stroke="#fff" stroke-width="5.2" stroke-linecap="round"/><circle cx="25.2" cy="16" r="2.6" fill="#fff"/></svg>Cirrava</a>
+    <a class="nav" href="/app/earn" data-view="earn"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M2 6.5 8 3l6 3.5M3 7v6m3.3-6v6m3.4-6v6M13 7v6M2 13.5h12"/></svg>Earn</a>
+    <a class="nav" href="/app/borrow" data-view="borrow"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M3 11.5 7 7.5l2 2 4-4.5M10 5h3v3"/></svg>Borrow</a>
+    <a class="nav" href="/app/portfolio" data-view="portfolio"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="8" r="5.5"/><path d="M8 2.5V8h5.5"/></svg>Portfolio</a>
+    <a class="nav" href="/app/status" data-view="status"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M1.5 8h3l1.5-4 3 8 1.5-4h4"/></svg>Status</a>
+    <div class="aside-foot">
+      <a href="/docs">Docs ↗</a>
+      <a href="/docs/risks">Risks ↗</a>
+      <a href="https://x.com/Cirrava" target="_blank" rel="noopener me">X @Cirrava ↗</a>
+      <span id="netLabel" style="display:block;margin-top:10px"></span>
+    </div>
+  </aside>
+
+  <main>
+    <div class="top">
+      <span class="mkt" id="mktPill"><span class="dot" id="mktDot"></span><span id="mktText">Reading market hours…</span></span>
+      <span class="demo" id="demoTag" hidden></span>
+      <span class="sp"></span>
+      <button class="pill" id="localBtn" hidden>Use local test account</button>
+      <button class="pill solid" id="connectBtn">Connect wallet</button>
+      <button class="toggle" id="themeBtn" aria-label="Toggle night mode"><i></i></button>
+    </div>
+
+    <div id="offline" class="card offline" hidden></div>
+
+    <!-- ===================== EARN ===================== -->
+    <section class="view" id="view-earn">
+      <h1>Earn</h1>
+      <p class="sub">Deposit USDG into the Earn vault. It lends to every Stock Token market and earns what borrowers pay. Withdrawals never depend on market hours.</p>
+      <div class="grid g3 section">
+        <div class="card"><div class="k">Total deposits</div><div class="v" id="eTotal">–</div></div>
+        <div class="card"><div class="k">Supply APY</div><div class="v" id="eApy">–</div></div>
+        <div class="card"><div class="k">Available to withdraw</div><div class="v" id="eAvail">–</div></div>
+      </div>
+      <div class="grid g2 section">
+        <div class="card">
+          <h2 style="font-family:var(--serif);font-weight:500;font-size:20px;margin-bottom:10px">Vault allocation</h2>
+          <table><thead><tr><th>Market</th><th>Supplied</th><th class="hide-m">Utilization</th><th>Supply APR</th></tr></thead><tbody id="allocBody"></tbody></table>
+        </div>
+        <div class="card">
+          <div class="tabs"><button class="on" data-earn="deposit">Deposit</button><button data-earn="withdraw">Withdraw</button></div>
+          <div class="field"><input id="eAmt" inputmode="decimal" placeholder="0.00" autocomplete="off"><button class="max" id="eMax">MAX</button><span class="sym">USDG</span></div>
+          <div class="row"><span>Wallet</span><b id="eWallet">–</b></div>
+          <div class="row"><span>Your deposit</span><b id="eYours">–</b></div>
+          <div class="row"><span>Vault shares</span><b id="eShares">–</b></div>
+          <button class="go" id="eGo">Connect wallet</button>
+          <div class="faucet"><button class="mini" data-faucet="USDG">Get test USDG</button></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== BORROW ===================== -->
+    <section class="view" id="view-borrow">
+      <h1>Borrow</h1>
+      <p class="sub">Post a Stock Token as collateral and borrow USDG against it. Each market is isolated. Borrowing and liquidations pause while the US market is closed; repaying and adding collateral never do.</p>
+      <div class="card section">
+        <table><thead><tr><th>Collateral</th><th>Price</th><th class="hide-m">LTV / Liq.</th><th class="hide-m">Liquidity</th><th>Borrow APR</th></tr></thead><tbody id="mktBody"></tbody></table>
+      </div>
+      <div class="grid g2 section">
+        <div class="card">
+          <div class="k">Your position · <span id="pSym">–</span></div>
+          <div class="grid g2" style="margin-top:8px;grid-template-columns:1fr 1fr">
+            <div><div class="k">Collateral</div><div class="v" id="pColl">–</div></div>
+            <div><div class="k">Debt</div><div class="v" id="pDebt">–</div></div>
+          </div>
+          <div class="row"><span>Health factor</span><b id="pHf">–</b></div>
+          <div class="hf"><i id="pHfBar" style="width:0"></i></div>
+          <div class="row"><span>Can still borrow</span><b id="pMax">–</b></div>
+          <div class="row"><span>Liquidation price</span><b id="pLiq">–</b></div>
+          <div class="row"><span>Price updated</span><b id="pUpd">–</b></div>
+        </div>
+        <div class="card">
+          <div class="tabs">
+            <button class="on" data-act="supply">Add collateral</button><button data-act="borrow">Borrow</button><button data-act="repay">Repay</button><button data-act="withdraw">Withdraw</button>
+          </div>
+          <div class="field"><input id="bAmt" inputmode="decimal" placeholder="0.00" autocomplete="off"><button class="max" id="bMax">MAX</button><span class="sym" id="bSym">–</span></div>
+          <div class="row"><span id="bBalLabel">Wallet</span><b id="bBal">–</b></div>
+          <div class="row"><span>Health after</span><b id="bHfAfter">–</b></div>
+          <div id="bNote" class="note" hidden></div>
+          <button class="go" id="bGo">Connect wallet</button>
+          <div class="faucet" id="bFaucet"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== PORTFOLIO ===================== -->
+    <section class="view" id="view-portfolio">
+      <h1>Portfolio</h1>
+      <p class="sub">Everything your wallet holds in Cirrava, read straight from the contracts.</p>
+      <div class="grid g3 section">
+        <div class="card"><div class="k">Earn deposit</div><div class="v" id="fEarn">–</div></div>
+        <div class="card"><div class="k">Total collateral</div><div class="v" id="fColl">–</div></div>
+        <div class="card"><div class="k">Total debt</div><div class="v" id="fDebt">–</div></div>
+      </div>
+      <div class="card section">
+        <table><thead><tr><th>Market</th><th>Collateral</th><th>Debt</th><th>Health</th><th class="hide-m">Wallet</th></tr></thead><tbody id="posBody"></tbody></table>
+      </div>
+    </section>
+
+    <!-- ===================== STATUS ===================== -->
+    <section class="view" id="view-status">
+      <h1>Status</h1>
+      <p class="sub">Live state of every contract: US market hours from the on-chain calendar, each price feed and what the protocol may do with it.</p>
+      <div class="grid g3 section">
+        <div class="card"><div class="k">US equity market</div><div class="v" id="sMkt">–</div><div class="row"><span id="sNext">–</span></div></div>
+        <div class="card"><div class="k">Chain</div><div class="v" id="sChain">–</div><div class="row"><span>Latest block</span><b id="sBlock">–</b></div></div>
+        <div class="card"><div class="k">Vault health</div><div class="v" id="sVault">–</div><div class="row"><span>Utilization</span><b id="sUtil">–</b></div></div>
+      </div>
+      <div class="card section">
+        <table><thead><tr><th>Feed</th><th>Price</th><th>Status</th><th class="hide-m">Last update</th><th>Borrow</th><th>Repay</th></tr></thead><tbody id="feedBody"></tbody></table>
+      </div>
+    </section>
+
+    <footer>Cirrava is unaudited, experimental software on Robinhood Chain. Deposits and loans use real assets and can be lost. Stock Tokens are tokenised debt securities and are not offered to persons in the United States, Canada, the United Kingdom or Switzerland. Nothing here is an offer, solicitation or recommendation to buy or sell any security.</footer>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="deployment.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>

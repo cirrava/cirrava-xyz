@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cirrava Docs</title>
+<!-- meta:start -->
+  <link rel="canonical" href="https://cirrava.xyz/docs">
+  <link rel="icon" href="/favicon.ico" sizes="any">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta name="theme-color" content="#E0664A">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Cirrava">
+  <meta property="og:title" content="Cirrava Docs">
+  <meta property="og:description" content="How Cirrava works: isolated Stock Token markets, the USDG Earn vault, market hours, risks and every contract address on Robinhood Chain.">
+  <meta property="og:url" content="https://cirrava.xyz/docs">
+  <meta property="og:image" content="https://cirrava.xyz/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@Cirrava">
+  <meta name="twitter:title" content="Cirrava Docs">
+  <meta name="twitter:description" content="How Cirrava works: isolated Stock Token markets, the USDG Earn vault, market hours, risks and every contract address on Robinhood Chain.">
+  <meta name="twitter:image" content="https://cirrava.xyz/og.png">
+  <meta name="twitter:image:alt" content="Cirrava, lending market for Stock Tokens, live on Robinhood Chain">
+<!-- meta:end -->
+<meta name="description" content="How Cirrava works: isolated Stock Token markets, the USDG Earn vault, market hours, risks and every contract address on Robinhood Chain.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,500&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFFBF8;--fg:#24182F;--muted:#6E6175;--line:#EFE3DC;--card:#fff;--accent:#E0664A;--code:#F7EEE9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120B22;--fg:#F1EAFB;--muted:#A99CBD;--line:#2A2140;--card:#1A1230;--accent:#F49A7A;--code:#211836}}
+:root[data-theme="dark"]{--bg:#120B22;--fg:#F1EAFB;--muted:#A99CBD;--line:#2A2140;--card:#1A1230;--accent:#F49A7A;--code:#211836}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);font:15px/1.65 "Inter Tight",system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:22px;padding:14px 24px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(10px)}
+header .brand{display:flex;align-items:center;gap:8px;font-weight:600;text-decoration:none}
+header .brand svg{width:20px;height:20px}
+header nav{display:flex;gap:16px;font-size:13px;color:var(--muted)}
+header nav a{text-decoration:none}header nav a:hover{color:var(--fg)}
+header .sp{flex:1}
+.search{position:relative;font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:8px;padding:4px 8px 4px 10px;min-width:220px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card)}
+.search:focus-within{border-color:var(--accent)}
+.search input{border:0;outline:0;background:none;color:var(--fg);font:13px "Inter Tight",sans-serif;width:100%;min-width:0}
+.search input::placeholder{color:var(--muted)}
+.search ul{position:absolute;right:0;top:calc(100% + 6px);width:340px;max-height:360px;overflow:auto;list-style:none;margin:0;padding:6px;background:var(--card);border:1px solid var(--line);border-radius:10px;box-shadow:0 12px 30px rgba(0,0,0,.12);z-index:10}
+.search li a{display:block;padding:8px 10px;border-radius:7px;text-decoration:none;color:var(--fg)}
+.search li a small{display:block;color:var(--muted);font-size:12px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.search li a:hover,.search li a.on{background:var(--code)}
+.search li.none{padding:10px;color:var(--muted)}
+kbd{font:11px "Inter Tight";border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.layout{display:grid;grid-template-columns:230px minmax(0,1fr);max-width:1180px;margin:0 auto}
+aside{position:sticky;top:57px;height:calc(100vh - 57px);overflow:auto;padding:28px 16px 28px 24px;border-right:1px solid var(--line);font-size:13.5px}
+aside a{display:block;padding:5px 10px;border-radius:6px;text-decoration:none;color:var(--muted)}
+aside a:hover{background:var(--code);color:var(--fg)}
+aside .g{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:18px 10px 6px}
+main{padding:48px clamp(20px,5vw,72px) 120px;max-width:820px}
+h1{font-family:"Bodoni Moda",serif;font-weight:500;font-size:44px;line-height:1.05;margin-bottom:14px}
+h2{font-family:"Bodoni Moda",serif;font-weight:500;font-size:28px;margin:64px 0 10px;scroll-margin-top:80px}
+h3{font-size:16px;margin:26px 0 6px}
+article{margin:22px 0 34px;padding-bottom:10px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
+article h3{font-family:"Bodoni Moda",serif;font-weight:500;font-size:22px;margin-top:0}
+p{margin:10px 0;color:var(--fg)}
+.lead{font-size:17px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:28px 0}
+.grid a{display:block;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card);text-decoration:none;transition:border-color .2s,transform .2s}
+.grid a:hover{border-color:var(--accent);transform:translateY(-2px)}
+.grid b{display:block;font-size:14px}.grid span{font-size:13px;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
+.note{border-left:3px solid var(--accent);padding:10px 14px;background:var(--code);border-radius:0 8px 8px 0;margin:16px 0;font-size:14px}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.sw{width:120px;border:1px solid var(--line);border-radius:10px;overflow:hidden;font-size:12px}
+.sw i{display:block;height:64px}.sw span{display:block;padding:6px 8px}
+.layout>*,main{min-width:0}
+@media (max-width:820px){.layout{grid-template-columns:minmax(0,1fr)}aside{display:none}.grid{grid-template-columns:1fr}
+  .search{min-width:0;flex:1}.search .keys{display:none}.search ul{width:min(340px,calc(100vw - 36px))}
+  main{padding:32px 18px 90px}h1{font-size:36px}
+  table{display:block;overflow-x:auto;white-space:nowrap}
+  header{padding:12px 18px;gap:14px}header nav{gap:12px}}
+</style>
+</head>
+<body>
+<header>
+  <a class="brand" href="/"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M23.5 9.2A9.5 9.5 0 1 0 23.5 22.8" fill="none" stroke="#E0664A" stroke-width="5.2" stroke-linecap="round"/><circle cx="25.2" cy="16" r="2.6" fill="#E0664A"/></svg>Cirrava</a>
+  <nav><a href="/">Home</a><a href="/app/status">Status</a><a href="https://x.com/Cirrava" target="_blank" rel="noopener me">X ↗</a></nav>
+  <span class="sp"></span>
+  <div class="search" role="search">
+    <input id="docSearch" type="search" placeholder="Search docs" aria-label="Search docs" autocomplete="off">
+    <span class="keys"><kbd>Ctrl</kbd> <kbd>K</kbd></span>
+    <ul id="docResults" role="listbox" hidden></ul>
+  </div>
+</header>
+<div class="layout">
+<aside>
+  <div class="g">Overview</div>
+  <a href="/docs">Cirrava</a><a href="/docs/intro">Introduction</a><a href="/docs/how">How it works</a><a href="/docs/hours">Market hours</a><a href="/docs/risks">Risks</a>
+  <div class="g">Build</div>
+  <a href="/docs/contracts">Contracts</a><a href="/docs/token">$CIRRAVA token</a><a href="/app/status">Live status</a>
+  <div class="g">More</div>
+  <a href="/docs/app">App</a><a href="/docs/blog">Blog</a><a href="/docs/brand">Brand kit</a>
+</aside>
+<main>
+  <h1 id="top">Cirrava</h1>
+  <p class="lead">A lending market for Stock Tokens. Borrow against equity exposure without selling it; lend the stablecoin that borrowing is denominated in.</p>
+  <div class="grid">
+    <a href="/docs/intro"><b>Introduction</b><span>What Cirrava is, and the one decision that shapes the rest of it.</span></a>
+    <a href="/docs/how"><b>How it works</b><span>Supplying, borrowing, interest, health and liquidation.</span></a>
+    <a href="/docs/hours"><b>Market hours</b><span>What changes when the exchange is shut, and what deliberately does not.</span></a>
+    <a href="/docs/risks"><b>Risks</b><span>What to understand before you deposit or borrow.</span></a>
+    <a href="/docs/contracts"><b>Contracts</b><span>Every address on Robinhood Chain mainnet.</span></a>
+    <a href="/app/status"><b>Live status</b><span>Market hours, prices and what the protocol may do right now.</span></a>
+  </div>
+
+  <h2 id="intro">Introduction</h2>
+  <p>Cirrava lets you borrow against Stock Tokens without selling them, and lets lenders earn yield on the stablecoin the borrowing is denominated in. It is live on Robinhood Chain mainnet (chain ID 4663) since 21 November 2026.</p>
+  <p>Hold NVDA as a Stock Token and need cash without closing the position? Deposit it as collateral and borrow USDG. Hold USDG and want yield? Deposit it into the Earn vault, which lends to every market and earns what borrowers pay. Contracts hold the assets; nobody else does.</p>
+  <h3>Why stocks are different from ETH</h3>
+  <p>A Stock Token tracks an instrument that stops trading overnight, at weekends and on holidays, and its price feed stops with it. Cirrava treats a closed market as an expected state, not an oracle failure: the last price stands, borrowing and liquidations pause, and every risk-reducing action stays open.</p>
+  <table><tr><th>Action</th><th>What it does</th></tr>
+    <tr><td>Earn</td><td>Deposit USDG into the Earn vault and receive cvUSDG shares. The vault is the only lender to the markets.</td></tr>
+    <tr><td>Borrow</td><td>Deposit NVDA, SPY, TSLA or AAPL (Robinhood Stock Tokens) and borrow USDG against it. A 0.1% fee is taken from each borrow.</td></tr>
+    <tr><td>Repay</td><td>In USDG, from your wallet, at any time.</td></tr></table>
+
+  <h2 id="how">How it works</h2>
+  <p>Each market is an isolated pair: one Stock Token as collateral, USDG to borrow. A position in NVDA/USDG is priced and liquidated on NVDA alone. Lenders share one Earn vault, and a cap per market (currently 10,000 USDG) bounds how much of the vault any one market can use.</p>
+  <h3>Borrowing</h3>
+  <p>Deposit collateral, borrow USDG up to the market's LTV, pay interest continuously, repay in USDG. Positions are recorded per wallet inside each market contract.</p>
+  <h3>Interest</h3>
+  <p>A kinked curve: 2% a year at zero utilization, rising to 10% at 80% utilization, then steeply to 110% at full utilization to pull liquidity back. Lenders earn what borrowers pay, minus a 10% reserve factor.</p>
+  <h3>Health and liquidation</h3>
+  <p>Two thresholds, with a deliberate gap: the <b>LTV</b> caps what you may borrow, and the <b>liquidation threshold</b> is where a position becomes liquidatable.</p>
+  <p><code>borrowed value &gt; collateral value × liquidation threshold</code></p>
+  <p>A liquidator may repay up to half of an unhealthy position's debt (all of it below $100) and receives collateral worth the repaid amount plus a 5% bonus.</p>
+
+  <h2 id="hours">Market hours</h2>
+  <p>The on-chain calendar follows the NYSE regular session, 09:30–16:00 New York time, Monday to Friday. US daylight-saving time is computed in the contract; NYSE holidays and early closes for 2026–2027 are stored on-chain.</p>
+  <table><tr><th>While the market is closed</th><th></th></tr>
+    <tr><td>Earn vault deposit / withdraw</td><td>Allowed</td></tr>
+    <tr><td>Supplying collateral</td><td>Allowed</td></tr>
+    <tr><td>Repaying</td><td>Allowed</td></tr>
+    <tr><td>Withdrawing collateral, no debt</td><td>Allowed</td></tr>
+    <tr><td>Withdrawing collateral, with debt</td><td>Paused</td></tr>
+    <tr><td>Borrowing</td><td>Paused</td></tr>
+    <tr><td>Liquidation</td><td>Paused</td></tr></table>
+  <p>Everything that reduces risk stays available; everything that takes a new position on a frozen price does not. After the open, a price published before the open still counts as closed until Chainlink publishes a fresh in-session price.</p>
+
+  <h2 id="risks">Risks</h2>
+  <div class="note">Read this before you deposit or borrow. Cirrava's contracts have not been audited. Deposits and loans use real assets and can be lost.</div>
+  <h3>Admin key</h3><p>One wallet currently owns every contract. It can change risk parameters, fees and the interest-rate model, pause a market, add markets to the Earn vault, set their caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable, and adding a market lets that wallet route vault deposits to it, so a lost or stolen admin key puts deposits at risk. Moving ownership to a multisig is on the roadmap.</p>
+  <h3>No upgrades</h3><p>The contracts are not upgradeable proxies: the code at each address is fixed. A fix would mean deploying new contracts.</p>
+  <h3>Oracle dependencies</h3><p>Positions are priced from Chainlink's feeds on Robinhood Chain. A paused, stale or wrong feed stops or misprices borrowing and liquidations.</p>
+  <h3>Weekend gaps</h3><p>Prices can move sharply between Friday's close and Monday's open; a position can open the week already liquidatable.</p>
+  <h3>Liquidity</h3><p>Vault withdrawals are limited to USDG that is not lent out. If markets are fully borrowed, a withdrawal waits until borrowers repay.</p>
+
+  <h2 id="contracts">Contracts</h2>
+  <p>Robinhood Chain mainnet, chain ID 4663, deployed 21 November 2026. Every address links to the explorer.</p>
+  <h3>Markets</h3>
+  <table><tr><th>Market</th><th>LendingMarket</th><th>Price oracle</th><th>LTV / Liq.</th></tr>
+    <tr><td>NVDA/USDG</td><td><a href="https://robinhoodchain.blockscout.com/address/0x95477C96CB4dFA66b2baCA583e09eb676FEe0aE4" target="_blank" rel="noopener"><code>0x9547…0aE4</code></a></td><td><a href="https://robinhoodchain.blockscout.com/address/0x14bD0ec2B8A8e4023D6C663ee600c54BC155cB04" target="_blank" rel="noopener"><code>0x14bD…cB04</code></a></td><td>60% / 65%</td></tr>
+    <tr><td>SPY/USDG</td><td><a href="https://robinhoodchain.blockscout.com/address/0x13EFa3249eA871B0f3fB014386312061D3248620" target="_blank" rel="noopener"><code>0x13EF…8620</code></a></td><td><a href="https://robinhoodchain.blockscout.com/address/0x1963ee19E294B9EBc681092aE116EC51e9A7d976" target="_blank" rel="noopener"><code>0x1963…d976</code></a></td><td>70% / 75%</td></tr>
+    <tr><td>TSLA/USDG</td><td><a href="https://robinhoodchain.blockscout.com/address/0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971" target="_blank" rel="noopener"><code>0xc28c…3971</code></a></td><td><a href="https://robinhoodchain.blockscout.com/address/0x7db44E20D0624371919535130CEEB8eB9763655B" target="_blank" rel="noopener"><code>0x7db4…655B</code></a></td><td>45% / 50%</td></tr>
+    <tr><td>AAPL/USDG</td><td><a href="https://robinhoodchain.blockscout.com/address/0xf8452a202b36dcDBb5da1b45A5fB1b5653295886" target="_blank" rel="noopener"><code>0xf845…5886</code></a></td><td><a href="https://robinhoodchain.blockscout.com/address/0x72AC37a2F20cA55892e8f8fDb4758068F5d12AC8" target="_blank" rel="noopener"><code>0x72AC…2AC8</code></a></td><td>60% / 65%</td></tr></table>
+  <h3>Core</h3>
+  <table><tr><th>Contract</th><th>Address</th></tr>
+    <tr><td>EarnVault (cvUSDG)</td><td><a href="https://robinhoodchain.blockscout.com/address/0xfF2F860F2eBFe6E615f8f27563f2684334D5de24" target="_blank" rel="noopener"><code>0xfF2F…de24</code></a></td></tr>
+    <tr><td>MarketCalendar</td><td><a href="https://robinhoodchain.blockscout.com/address/0x13C77954bE518078Bb88a3A144A06246484Db946" target="_blank" rel="noopener"><code>0x13C7…b946</code></a></td></tr>
+    <tr><td>InterestRateModel</td><td><a href="https://robinhoodchain.blockscout.com/address/0x667db67029E681420Ba684a073b7Eb9E52103Cb3" target="_blank" rel="noopener"><code>0x667d…3Cb3</code></a></td></tr>
+    <tr><td>USDG oracle (24/7)</td><td><a href="https://robinhoodchain.blockscout.com/address/0xAa2cFF138aeAB9d204eae2406cE1E295deFa22CC" target="_blank" rel="noopener"><code>0xAa2c…22CC</code></a></td></tr>
+    <tr><td>Owner &amp; treasury</td><td><a href="https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1" target="_blank" rel="noopener"><code>0xa319…0BA1</code></a></td></tr></table>
+  <h3 id="token">$CIRRAVA token</h3>
+  <table><tr><th>Token</th><th>Address</th><th>Decimals</th><th>Total supply</th></tr>
+    <tr><td>CIRRAVA</td><td><a href="https://robinhoodchain.blockscout.com/address/0x0267939aCc8C236e0eB2bd425c026c9180e7446A" target="_blank" rel="noopener"><code>0x0267…446A</code></a></td><td>18</td><td>1,000,000,000</td></tr></table>
+  <p>ERC-20 on Robinhood Chain. The contract has no owner and is not upgradeable. Check the address above before you trade: anyone can create a token with the same name.</p>
+  <h3>Assets (issued by Robinhood, Paxos and Chainlink, not by Cirrava)</h3>
+  <table><tr><th>Token</th><th>Address</th><th>Decimals</th><th>Chainlink feed</th></tr>
+    <tr><td>USDG</td><td><a href="https://robinhoodchain.blockscout.com/address/0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168" target="_blank" rel="noopener"><code>0x5fc5…d168</code></a></td><td>6</td><td><a href="https://robinhoodchain.blockscout.com/address/0x61B7e5650328764B076A108EFF5fa7282a1B9aD2" target="_blank" rel="noopener"><code>0x61B7…9aD2</code></a></td></tr>
+    <tr><td>NVDA</td><td><a href="https://robinhoodchain.blockscout.com/address/0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC" target="_blank" rel="noopener"><code>0xd060…9EEC</code></a></td><td>18</td><td><a href="https://robinhoodchain.blockscout.com/address/0x379EC4f7C378F34a1B47E4F3cbeBCbAC3E8E9F15" target="_blank" rel="noopener"><code>0x379E…9F15</code></a></td></tr>
+    <tr><td>SPY</td><td><a href="https://robinhoodchain.blockscout.com/address/0x117cc2133c37B721F49dE2A7a74833232B3B4C0C" target="_blank" rel="noopener"><code>0x117c…4C0C</code></a></td><td>18</td><td><a href="https://robinhoodchain.blockscout.com/address/0x319724394D3A0e3669269846abE664Cd621f9f6A" target="_blank" rel="noopener"><code>0x3197…9f6A</code></a></td></tr>
+    <tr><td>TSLA</td><td><a href="https://robinhoodchain.blockscout.com/address/0x322F0929c4625eD5bAd873c95208D54E1c003b2d" target="_blank" rel="noopener"><code>0x322F…3b2d</code></a></td><td>18</td><td><a href="https://robinhoodchain.blockscout.com/address/0x4A1166a659A55625345e9515b32adECea5547C38" target="_blank" rel="noopener"><code>0x4A11…7C38</code></a></td></tr>
+    <tr><td>AAPL</td><td><a href="https://robinhoodchain.blockscout.com/address/0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9" target="_blank" rel="noopener"><code>0xaF3D…93f9</code></a></td><td>18</td><td><a href="https://robinhoodchain.blockscout.com/address/0x6B22A786bAa607d76728168703a39Ea9C99f2cD0" target="_blank" rel="noopener"><code>0x6B22…2cD0</code></a></td></tr></table>
+
+  <h2 id="app">App</h2>
+  <p>The app has three tabs: <b>Earn</b> (deposit USDG into the vault), <b>Borrow</b> (open a position in a market) and <b>Portfolio</b> (your positions and health). Connect a wallet to begin.</p>
+
+  <h2 id="blog">Blog</h2>
+  <article id="post-launch">
+    <h3>Cirrava is live on Robinhood Chain</h3>
+    <p class="lead" style="font-size:13px">21 November 2026</p>
+    <p>Cirrava is deployed on Robinhood Chain mainnet (chain ID 4663). It opens with four isolated markets, each taking one Robinhood Stock Token as collateral and lending USDG against it:</p>
+    <table><tr><th>Market</th><th>Max borrow (LTV)</th><th>Liquidation threshold</th></tr>
+      <tr><td>NVDA/USDG</td><td>60%</td><td>65%</td></tr>
+      <tr><td>SPY/USDG</td><td>70%</td><td>75%</td></tr>
+      <tr><td>TSLA/USDG</td><td>45%</td><td>50%</td></tr>
+      <tr><td>AAPL/USDG</td><td>60%</td><td>65%</td></tr></table>
+    <p>Lenders deposit USDG into one Earn vault, which supplies every market up to a cap of 10,000 USDG each. Prices come straight from Chainlink's feeds on Robinhood Chain, and an on-chain NYSE calendar decides when borrowing is allowed. Every address is listed under <a href="/docs/contracts">Contracts</a>.</p>
+    <p>The caps are deliberately small: the contracts have not been audited yet. They go up after an audit and after ownership moves to a multisig (see the roadmap on the homepage).</p>
+  </article>
+
+  <article id="post-hours">
+    <h3>What happens when the market closes</h3>
+    <p class="lead" style="font-size:13px">21 November 2026</p>
+    <p>A Stock Token follows a share that only trades 09:30–16:00 New York time, Monday to Friday. When the exchange shuts, its price feed stops moving. Cirrava treats that as a normal state rather than an error.</p>
+    <p>While the market is closed, anything that would take a new position on a frozen price waits: <b>borrowing</b>, <b>liquidations</b> and <b>withdrawing collateral from a position that has debt</b>. Anything that reduces risk keeps working: <b>repaying</b>, <b>adding collateral</b>, <b>withdrawing collateral with no debt</b>, and <b>depositing into or withdrawing from the Earn vault</b>.</p>
+    <p>At the open, a price published before 09:30 still counts as closed until Chainlink publishes a fresh one during the session, so nobody borrows on Friday's close. In Indonesia, the US open is 21:30 WIB from November to March and 20:30 WIB from March to November. Weekends, NYSE holidays and early closes are all handled on-chain; the app's <a href="/app/status">Status</a> page shows the live state.</p>
+  </article>
+
+  <article id="post-health">
+    <h3>Health factor, LTV and liquidation</h3>
+    <p class="lead" style="font-size:13px">21 November 2026</p>
+    <p>Two numbers set the limits of a position. The <b>LTV</b> is the most you can borrow when you open or increase a loan. The <b>liquidation threshold</b> is the level at which the position can be liquidated. The gap between them is your buffer.</p>
+    <p>Worked example on NVDA/USDG, with NVDA at $130:</p>
+    <table><tr><th></th><th>Value</th></tr>
+      <tr><td>Collateral: 10 NVDA</td><td>$1,300</td></tr>
+      <tr><td>Most you can borrow (60%)</td><td>$780 USDG</td></tr>
+      <tr><td>Liquidatable once debt exceeds (65%)</td><td>$845</td></tr>
+      <tr><td>If you borrow the full $780, liquidation price</td><td>$120 per NVDA</td></tr></table>
+    <p>The <b>health factor</b> is collateral value × liquidation threshold ÷ debt. Above 1 is safe; below 1 the position can be liquidated. Borrowing $500 against the 10 NVDA above gives 1,300 × 0.65 ÷ 500 = 1.69.</p>
+    <p>A liquidator repays up to half of an unhealthy position's debt (all of it if the debt is under $100) and receives collateral worth that amount plus a 5% bonus. Interest accrues every second, so a position drifts toward liquidation slowly even if the price does not move. Repaying or adding collateral raises the health factor at any time, including while the market is closed.</p>
+  </article>
+
+  <h2 id="brand">Brand kit</h2>
+  <p>The Cirrava mark is an open "C" with a dot. Wordmark set in Bodoni Moda; interface in Inter Tight.</p>
+  <h3>Downloads</h3>
+  <table><tr><th>Asset</th><th>Format</th><th></th></tr>
+    <tr><td>Mark (vector)</td><td>SVG</td><td><a href="/favicon.svg" download="cirrava-mark.svg">Download</a></td></tr>
+    <tr><td>Mark, 512 × 512</td><td>PNG</td><td><a href="/icon-512.png" download="cirrava-mark-512.png">Download</a></td></tr>
+    <tr><td>Mark, 180 × 180 (square)</td><td>PNG</td><td><a href="/apple-touch-icon.png" download="cirrava-mark-180.png">Download</a></td></tr>
+    <tr><td>Social banner, 1200 × 630</td><td>PNG</td><td><a href="/og.png" download="cirrava-banner.png">Download</a></td></tr></table>
+  <h3>Colours</h3>
+  <div class="swatches">
+    <div class="sw"><i style="background:#E0664A"></i><span>Dusk Coral #E0664A</span></div>
+    <div class="sw"><i style="background:#FFF0E6"></i><span>Cloud Cream #FFF0E6</span></div>
+    <div class="sw"><i style="background:#120B22"></i><span>Night Plum #120B22</span></div>
+    <div class="sw"><i style="background:#7E6FA3"></i><span>Night Cloud #7E6FA3</span></div>
+  </div>
+</main>
+</div>
+<script>
+/* Docs search: indexes every section, sub-heading and blog post; Ctrl/⌘+K to focus. */
+(() => {
+  const input = document.getElementById("docSearch"), list = document.getElementById("docResults");
+  if (!input) return;
+  const entries = [];
+  let current = null;
+  for (const el of document.querySelectorAll("main h1[id], main h2[id], main h3, main article[id]")) {
+    if (el.tagName === "H2" || el.tagName === "H1") current = el.id;
+    if (el.tagName === "ARTICLE") {
+      entries.push({ id: el.id, title: el.querySelector("h3").textContent, text: el.textContent });
+      continue;
+    }
+    if (el.closest("article")) continue;
+    let text = "", n = el.nextElementSibling;
+    while (n && !/^H[1-3]$/.test(n.tagName) && n.tagName !== "ARTICLE") { text += " " + n.textContent; n = n.nextElementSibling; }
+    entries.push({ id: el.id || current, title: el.textContent, text: el.textContent + text, sub: el.tagName === "H3" });
+  }
+  let sel = 0, shown = [];
+  const norm = (s) => s.toLowerCase().replace(/\s+/g, " ");
+  const snippet = (text, q) => {
+    const t = text.replace(/\s+/g, " ").trim(), i = norm(t).indexOf(q);
+    return i < 0 ? t.slice(0, 90) : (i > 30 ? "…" : "") + t.slice(Math.max(0, i - 30), i + 70);
+  };
+  const render = () => {
+    const q = norm(input.value.trim());
+    if (!q) { list.hidden = true; return; }
+    shown = entries
+      .map((e) => ({ e, score: norm(e.title).includes(q) ? 2 : norm(e.text).includes(q) ? 1 : 0 }))
+      .filter((r) => r.score).sort((a, b) => b.score - a.score).slice(0, 8).map((r) => r.e);
+    sel = 0;
+    list.innerHTML = shown.length
+      ? shown.map((e, i) => `<li><a href="/docs/${e.id === "top" ? "" : e.id}" class="${i === sel ? "on" : ""}">${e.title}<small>${snippet(e.text, q).replace(/</g, "&lt;")}</small></a></li>`).join("")
+      : `<li class="none">No results for “${input.value.replace(/</g, "&lt;")}”</li>`;
+    list.hidden = false;
+  };
+  const close = () => { list.hidden = true; };
+  input.addEventListener("input", render);
+  input.addEventListener("focus", render);
+  input.addEventListener("keydown", (e) => {
+    const links = list.querySelectorAll("a");
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      if (!links.length) return;
+      sel = (sel + (e.key === "ArrowDown" ? 1 : links.length - 1)) % links.length;
+      links.forEach((a, i) => a.classList.toggle("on", i === sel));
+    } else if (e.key === "Enter" && links[sel]) { e.preventDefault(); links[sel].click(); close(); input.blur(); }
+    else if (e.key === "Escape") { close(); input.blur(); }
+  });
+  list.addEventListener("click", (e) => { if (e.target.closest("a")) { close(); input.value = ""; } });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".search")) close(); });
+  document.addEventListener("keydown", (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") { e.preventDefault(); input.focus(); input.select(); }
+  });
+})();
+</script>
+<script>
+/* Clean section URLs: /docs/<section> scrolls to that section; old #anchors are upgraded. */
+(() => {
+  const ids = new Set([...document.querySelectorAll("[id]")].map((e) => e.id));
+  const show = (id, smooth) => {
+    const el = id && document.getElementById(id);
+    if (el) el.scrollIntoView({ block: "start" });
+    else if (!id) scrollTo(0, 0);
+  };
+  const fromPath = () => location.pathname.replace(/\/+$/, "").split("/docs/")[1] || "";
+  const paths = location.protocol.startsWith("http") && location.pathname.startsWith("/docs");
+  if (paths && location.hash && ids.has(location.hash.slice(1))) history.replaceState(null, "", "/docs/" + location.hash.slice(1));
+  addEventListener("load", () => show(paths ? fromPath() : location.hash.slice(1)));
+  addEventListener("popstate", () => show(fromPath(), true));
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="/docs"]');
+    if (!a || !paths || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    const id = a.getAttribute("href").replace(/^\/docs\/?/, "");
+    if (id && !ids.has(id)) return;
+    e.preventDefault();
+    history.pushState(null, "", a.getAttribute("href"));
+    show(id, true);
+  });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Secrets — never commit keys or env files
+.env
+.env.*
+*.key
+*.pem
+secrets*
+
+# Dependencies and build output
+node_modules/
+protocol/artifacts/
+protocol/cache/
+dist/
+*.tar.gz
+__pycache__/
+
+# Local-only files
+art/paintings.js
+protocol/deployments/localhost.json
+.claude/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Internal ops notes (server details)
+deploy/PANDUAN-VPS.md
