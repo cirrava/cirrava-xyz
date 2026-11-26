@@ -8,7 +8,6 @@ Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 - Added a security policy (private vulnerability reporting) and this changelog.
 - Verified the source of all 12 live contracts on Sourcify (exact match) and added
   `protocol/scripts/match-bytecode.js`, which checks live bytecode against this repository.
-
 - $CIRRAVA token linked on the website and in the docs:
   [`0x0267939aCc8C236e0eB2bd425c026c9180e7446A`](https://robinhoodchain.blockscout.com/address/0x0267939aCc8C236e0eB2bd425c026c9180e7446A)
   (ERC-20, 18 decimals, 1,000,000,000 supply, no owner, not upgradeable).
