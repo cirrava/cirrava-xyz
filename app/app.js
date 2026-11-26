@@ -265,15 +265,20 @@ function statusOf(i) {
 function canBorrow(i) {
   return !i.paused && Number(i.collateralStatus) === 0 && Number(i.borrowStatus) === 0;
 }
-function pausedReason(i) {
+// 24/7 markets: oracle has no exchange calendar; a price is usable while the feed updated recently
+const is247 = (m) => m?.hours === "24/7";
+const pair = (m) => m.symbol + (is247(m) ? " 24/7" : "");
+const tag247 = (m) => (is247(m) ? ` <span class="h247" title="Priced by a 24/7 feed: usable whenever the price updated recently, weekends included">24/7</span>` : "");
+function pausedReason(i, m) {
   if (i.paused) return "This market is paused by the pauser.";
   const s = statusOf(i);
+  if (is247(m) && s === "Stale") return "No price update in the last few hours (quiet or closed market). Borrowing and liquidations pause until the 24/7 feed updates; repaying and adding collateral stay open.";
   if (s === "MarketClosed") return `Paused while the US market is closed${S.next ? ` · reopens ${et(S.next)}` : ""}. Repaying and adding collateral stay open.`;
   if (s === "Stale") return "Price feed is stale; risk-increasing actions are paused until it updates.";
   if (Number(i.borrowStatus) !== 0) return "USDG price feed is not fresh.";
   return `Price status: ${STATUS_LABEL[s]}.`;
 }
-const badge = (s) => `<span class="badge ${s}">${STATUS_LABEL[s]}</span>`;
+const badge = (s, m) => `<span class="badge ${s}">${is247(m) && s === "Stale" ? "Waiting for price" : STATUS_LABEL[s]}</span>`;
 
 function render() {
   // market-hours pill
@@ -298,7 +303,7 @@ function renderEarn() {
   $("eApy").textContent = apy(apr);
   $("allocBody").innerHTML = MK.map((m, k) => {
     const i = S.info[k];
-    return `<tr><td><div class="asset">${icon(m.symbol)}${m.symbol}/USDG</div></td>
+    return `<tr><td><div class="asset">${icon(m.symbol)}${m.symbol}/USDG${tag247(m)}</div></td>
       <td>${amt(n(i.supplyAssets, 6), 0)}</td><td class="hide-m">${pct(i.utilization)}</td><td>${apy(i.supplyAPR)}</td></tr>`;
   }).join("");
   $("eWallet").textContent = account ? `${amt(n(S.usdgBal, 6))} USDG` : "–";
@@ -321,8 +326,8 @@ function renderBorrow() {
     const i = S.info[k];
     const s = statusOf(i);
     return `<tr data-k="${k}" class="${k === S.sel ? "sel" : ""}">
-      <td><div class="asset">${icon(m.symbol)}<div>${m.symbol}<span>${m.name}</span></div></div></td>
-      <td>${usd(n(i.collateralPrice, 18))}<div style="margin-top:4px">${badge(s)}</div></td>
+      <td><div class="asset">${icon(m.symbol)}<div>${m.symbol}${tag247(m)}<span>${m.name}</span></div></div></td>
+      <td>${usd(n(i.collateralPrice, 18))}<div style="margin-top:4px">${badge(s, m)}</div></td>
       <td class="hide-m">${pct(i.ltv)} / ${pct(i.liquidationThreshold)}</td>
       <td class="hide-m">${amt(n(i.cash, 6), 0)} USDG</td>
       <td>${pct(i.borrowAPR)}</td></tr>`;
@@ -333,7 +338,7 @@ function renderBorrow() {
   const i = S.info[S.sel];
   const p = S.pos[S.sel];
   const price = n(i.collateralPrice, 18);
-  $("pSym").textContent = `${m.symbol}/USDG`;
+  $("pSym").textContent = `${pair(m)}/USDG`;
   $("pUpd").textContent = `${et(i.collateralUpdatedAt)} · ${ago(i.collateralUpdatedAt)}`;
   if (p) {
     const coll = n(p.collateral, 18);
@@ -403,7 +408,7 @@ function renderAction() {
   const note = $("bNote");
   note.hidden = true;
   const riskUp = S.act === "borrow" || (S.act === "withdraw" && p && p.debt > 0n);
-  if (riskUp && !canBorrow(i)) { note.hidden = false; note.textContent = pausedReason(i); }
+  if (riskUp && !canBorrow(i)) { note.hidden = false; note.textContent = pausedReason(i, m); }
   if (S.act === "borrow" && note.hidden && v > 0n) {
     const fee = (v * i.borrowFee) / WAD;
     note.hidden = false;
@@ -428,7 +433,7 @@ function renderPortfolio() {
   $("fDebt").textContent = usd(debt);
   $("posBody").innerHTML = MK.map((m, k) => {
     const p = S.pos[k];
-    return `<tr onclick="cirravaNavigate('borrow')"><td><div class="asset">${icon(m.symbol)}${m.symbol}/USDG</div></td>
+    return `<tr onclick="cirravaNavigate('borrow')"><td><div class="asset">${icon(m.symbol)}${m.symbol}/USDG${tag247(m)}</div></td>
       <td>${amt(n(p.collateral, 18), 4)} ${m.symbol}<div style="font-size:12px;color:var(--muted)">${usd(n(p.collateralValue, 18))}</div></td>
       <td>${amt(n(p.debt, 6), 2)} USDG</td><td>${hfText(p.healthFactor)}</td>
       <td class="hide-m">${amt(n(S.wal[k], 18), 4)} ${m.symbol}</td></tr>`;
@@ -451,8 +456,8 @@ function renderStatus() {
     : "";
   $("feedBody").innerHTML = MK.map((m, k) => {
     const i = S.info[k];
-    return `<tr><td><div class="asset">${icon(m.symbol)}${m.symbol} / USD</div></td>
-      <td>${usd(n(i.collateralPrice, 18))}</td><td>${badge(statusOf(i))}</td>
+    return `<tr><td><div class="asset">${icon(m.symbol)}${m.symbol} / USD${tag247(m)}</div></td>
+      <td>${usd(n(i.collateralPrice, 18))}</td><td>${badge(statusOf(i), m)}</td>
       <td class="hide-m">${et(i.collateralUpdatedAt)} · ${ago(i.collateralUpdatedAt)}</td>
       <td>${canBorrow(i) ? "Open" : "Paused"}</td><td>Open</td></tr>`;
   }).join("") + usdgRow;

@@ -21,4 +21,13 @@ module.exports = {
     { symbol: "GOOGL", name: "Alphabet Class A", token: "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3", feed: "0xF6f373a037c30F0e5010d854385cA89185AE638b", ltv: 0.6, lt: 0.65 },
     { symbol: "AMZN", name: "Amazon", token: "0x12f190a9F9d7D37a250758b26824B97CE941bF54", feed: "0xD5a1508ceD74c084eBf3cBe853e2C968fB2a651C", ltv: 0.6, lt: 0.65 },
   ],
+  // 24/7 markets: same Stock Tokens, priced by Chainlink's "Robinhood X (24/7)" feeds (same deployer and owner
+  // as the feeds above). Their oracle has NO exchange calendar: a price counts as fresh while the feed updated
+  // within `window` seconds, weekends included; otherwise borrowing and liquidations pause. Off-hours prices are
+  // thinner, so LTVs are lower, the liquidation bonus higher and the cap smaller than the regular markets.
+  markets247: [
+    { symbol: "NVDA", hours: "24/7", name: "NVIDIA", token: "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC", feed: "0xFE941871d8c2AC48C70A62f864De47090Ef8171d", ltv: 0.5, lt: 0.55, bonus: 0.075, window: 3 * 3600, cap: "5000" },
+    { symbol: "TSLA", hours: "24/7", name: "Tesla", token: "0x322F0929c4625eD5bAd873c95208D54E1c003b2d", feed: "0x39eDf5ef54150A30d2C4F1b982FbB8f93050BC37", ltv: 0.35, lt: 0.4, bonus: 0.075, window: 3 * 3600, cap: "5000" },
+    { symbol: "GOOGL", hours: "24/7", name: "Alphabet Class A", token: "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3", feed: "0xf7FE6f0Af535f2c1c20Ab6cEB1fa46777c2e1B4E", ltv: 0.5, lt: 0.55, bonus: 0.075, window: 3 * 3600, cap: "5000" },
+  ],
 };

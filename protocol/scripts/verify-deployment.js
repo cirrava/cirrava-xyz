@@ -52,15 +52,15 @@ async function main() {
       same(await mk.irm(), dep.irm),
       same(await mk.treasury(), dep.treasury),
       same(await or.feed(), m.feed),
-      same(await or.calendar(), dep.calendar),
+      m.hours === "24/7" ? same(await or.calendar(), ethers.ZeroAddress) && (await or.maxAgeInSession()) === BigInt(m.window) : same(await or.calendar(), dep.calendar),
       info.ltv === ethers.parseUnits(String(m.ltv), 18),
       info.liquidationThreshold === ethers.parseUnits(String(m.lt), 18),
-      info.liquidationBonus === ethers.parseUnits("0.05", 18),
+      info.liquidationBonus === ethers.parseUnits(String(m.bonus ?? 0.05), 18),
       info.borrowFee === ethers.parseUnits("0.001", 18),
-      cap === ethers.parseUnits(dep.capPerMarket, 6),
+      cap === ethers.parseUnits(m.cap || dep.capPerMarket, 6),
       !info.paused,
     ];
-    ok(checks.every(Boolean), `${m.symbol} market wiring, risk params, cap ${dep.capPerMarket} USDG${checks.every(Boolean) ? "" : "  → failed checks: " + checks.map((c, j) => (c ? null : j)).filter((x) => x !== null).join(",")}`);
+    ok(checks.every(Boolean), `${m.symbol}${m.hours ? " " + m.hours : ""} market wiring, risk params, cap ${m.cap || dep.capPerMarket} USDG${checks.every(Boolean) ? "" : "  → failed checks: " + checks.map((c, j) => (c ? null : j)).filter((x) => x !== null).join(",")}`);
     ok(same(await mk.owner(), owner ?? (await mk.owner())), `  owner ${await mk.owner()}`);
     console.log(`  ${m.symbol.padEnd(5)} $${Number(ethers.formatUnits(info.collateralPrice, 18)).toFixed(2)}  ${STATUS[Number(info.collateralStatus)]}  supplied ${ethers.formatUnits(info.supplyAssets, 6)} USDG  borrow APR ${(Number(ethers.formatUnits(info.borrowAPR, 18)) * 100).toFixed(2)}%`);
   }

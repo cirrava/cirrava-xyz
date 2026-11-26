@@ -1,10 +1,12 @@
-// Adds the Phase 03 markets (MSFT, QQQ, GOOGL, AMZN) to the LIVE Cirrava deployment on Robinhood Chain.
-// For each Stock Token: deploys a StockOracle and a LendingMarket wired to the existing calendar, IRM,
-// USDG oracle and Earn vault, then calls vault.addMarket(market, cap). Must be run by the vault owner.
+// Adds new markets to the LIVE Cirrava deployment on Robinhood Chain: every entry of mainnet-assets.js
+// `newMarkets` and `markets247` that is not yet in deployments/robinhood.json.
+// For each: deploys a StockOracle (with the NYSE calendar, or none for 24/7 markets) and a LendingMarket
+// wired to the existing IRM, USDG oracle and Earn vault, then calls vault.addMarket(market, cap).
+// Must be run by the vault owner.
 //
 //   Dry run on a fork (free):  FORK=1 npx hardhat run scripts/add-markets.js
 //   Real (costs gas, final):   bash scripts/run-add-markets.sh add
-// Optional env: ONLY=MSFT,QQQ  (subset)   CAP_USDG=10000
+// Optional env: ONLY=MSFT,"NVDA 24/7"  (subset, by symbol or key)   CAP_USDG=10000 (default cap)
 const fs = require("fs");
 const path = require("path");
 const { ethers, network } = require("hardhat");
@@ -28,8 +30,11 @@ async function main() {
   if (chainId !== dep.chainId) throw new Error(`Connected to chain ${chainId}, expected ${dep.chainId}`);
   const isFork = network.name !== "robinhood";
   const only = (process.env.ONLY || "").split(",").map((s) => s.trim().toUpperCase()).filter(Boolean);
-  const have = new Set(dep.markets.map((m) => m.symbol));
-  const todo = A.newMarkets.filter((m) => !have.has(m.symbol) && (!only.length || only.includes(m.symbol)));
+  const key = (m) => m.symbol + (m.hours ? ` ${m.hours}` : "");
+  const have = new Set(dep.markets.map(key));
+  const todo = [...A.newMarkets, ...(A.markets247 || [])].filter(
+    (m) => !have.has(key(m)) && (!only.length || only.includes(m.symbol) || only.includes(key(m).toUpperCase())),
+  );
   if (!todo.length) return console.log("Nothing to add: every new market is already in deployments/robinhood.json.");
   const cap = ethers.parseUnits(process.env.CAP_USDG || String(dep.capPerMarket || "10000").split(".")[0], 6);
 
@@ -47,7 +52,7 @@ async function main() {
       throw new Error(`Signer ${signer.address} is not the vault owner ${owner}. Nothing was sent.`);
   }
   const bal = await ethers.provider.getBalance(owner);
-  console.log(`${isFork ? "DRY RUN on a mainnet fork" : signer ? "MAINNET" : "ESTIMATE ONLY (no key, read-only)"}: add ${todo.map((m) => m.symbol).join(", ")} (cap ${ethers.formatUnits(cap, 6)} USDG each)`);
+  console.log(`${isFork ? "DRY RUN on a mainnet fork" : signer ? "MAINNET" : "ESTIMATE ONLY (no key, read-only)"}: add ${todo.map((m) => `${key(m)} (cap ${m.cap || ethers.formatUnits(cap, 6)} USDG)`).join(", ")}`);
   console.log(`  owner ${owner}  (${ethers.formatEther(bal)} ETH)`);
 
   // 1. check every token and feed on-chain before spending anything
@@ -58,7 +63,7 @@ async function main() {
     if (sym !== m.symbol || Number(d) !== 18) throw new Error(`${m.symbol}: token is ${sym} with ${d} decimals`);
     if (!desc.toUpperCase().includes(m.symbol)) throw new Error(`${m.symbol}: feed is "${desc}"`);
     if (!(r[1] > 0n)) throw new Error(`${m.symbol}: feed price not positive`);
-    console.log(`  ok ${m.symbol.padEnd(5)} token ${sym}  feed "${desc}" $${ethers.formatUnits(r[1], fdec)}`);
+    console.log(`  ok ${key(m).padEnd(10)} token ${sym}  feed "${desc}" $${ethers.formatUnits(r[1], fdec)}`);
   }
 
   const fee = await ethers.provider.getFeeData();
@@ -98,8 +103,13 @@ async function main() {
   };
 
   for (const m of todo) {
-    console.log(`\n${m.symbol}`);
-    const oracle = await deploy("StockOracle", owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600);
+    const h247 = m.hours === "24/7";
+    const mcap = m.cap ? ethers.parseUnits(m.cap, 6) : cap;
+    console.log(`\n${key(m)}`);
+    // 24/7: no calendar, a price is Fresh while younger than `window`; regular: NYSE calendar, 26h / 97h windows
+    const oracle = h247
+      ? await deploy("StockOracle", owner, m.feed, ethers.ZeroAddress, m.window, m.window)
+      : await deploy("StockOracle", owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600);
     const market = await deploy("LendingMarket", {
       owner,
       vault: dep.vault,
@@ -111,14 +121,18 @@ async function main() {
       irm: dep.irm,
       ltv: WAD(m.ltv),
       liquidationThreshold: WAD(m.lt),
-      liquidationBonus: WAD(0.05),
+      liquidationBonus: WAD(m.bonus ?? 0.05),
       reserveFactor: WAD(0.1),
       borrowFee: WAD(0.001),
     });
-    const r = await (await vault.connect(signer).addMarket(await market.getAddress(), cap, ov)).wait();
+    const r = await (await vault.connect(signer).addMarket(await market.getAddress(), mcap, ov)).wait();
     gasUsed += r.gasUsed;
-    console.log(`  vault.addMarket  cap ${ethers.formatUnits(cap, 6)} USDG`);
-    dep.markets.push({ symbol: m.symbol, name: m.name, decimals: 18, token: m.token, feed: m.feed, oracle: await oracle.getAddress(), market: await market.getAddress(), ltv: m.ltv, lt: m.lt });
+    console.log(`  vault.addMarket  cap ${ethers.formatUnits(mcap, 6)} USDG`);
+    dep.markets.push({
+      symbol: m.symbol, ...(h247 ? { hours: "24/7", window: m.window } : {}), name: m.name, decimals: 18,
+      token: m.token, feed: m.feed, oracle: await oracle.getAddress(), market: await market.getAddress(),
+      ltv: m.ltv, lt: m.lt, ...(m.bonus ? { bonus: m.bonus } : {}), ...(m.cap ? { cap: m.cap } : {}),
+    });
     // record after every market, so a later failure loses nothing
     if (!isFork) fs.writeFileSync(DEP, JSON.stringify(dep, null, 2));
   }
@@ -128,7 +142,7 @@ async function main() {
     const o = await ethers.getContractAt("StockOracle", m.oracle);
     const [p, st] = await o.latest();
     const mk = await ethers.getContractAt("LendingMarket", m.market);
-    console.log(`  ${m.symbol.padEnd(5)} price $${Number(ethers.formatUnits(p, 18)).toFixed(2)}  ${STATUS[Number(st)]}  collateral ${await mk.collateralToken()}`);
+    console.log(`  ${key(m).padEnd(10)} price $${Number(ethers.formatUnits(p, 18)).toFixed(2)}  ${STATUS[Number(st)]}  collateral ${await mk.collateralToken()}`);
   }
   console.log(`  vault markets: ${await vault.marketCount()}`);
   console.log(`\nGas used ${gasUsed} (${gasUsed / BigInt(todo.length)} per market) = ${ethers.formatEther(gasUsed * price)} ETH at ${ethers.formatUnits(price, "gwei")} gwei`);

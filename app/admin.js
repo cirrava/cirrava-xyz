@@ -34,6 +34,9 @@ const short = (a) => (a ? a.slice(0, 6) + "…" + a.slice(-4) : "—");
 const link = (a) => (D.explorer ? `<a href="${D.explorer}/address/${a}" target="_blank" rel="noopener"><code>${short(a)}</code></a>` : `<code>${short(a)}</code>`);
 const WAD = (x) => ethers.parseUnits(String(x), 18);
 const cap = ethers.parseUnits(String(D?.capPerMarket || "10000").split(".")[0], 6);
+const is247 = (m) => m.hours === "24/7";
+const id = (m) => m.symbol + (m.hours ? " " + m.hours : "");
+const capOf = (m) => (m.cap ? ethers.parseUnits(m.cap, 6) : cap);
 
 const KEY = `cirrava-admin-${D?.chainId}-${D?.vault}`;
 const store = {
@@ -57,15 +60,19 @@ async function readState() {
   const vault = new ethers.Contract(D.vault, VAULT, rpc);
   owner = await vault.owner();
   const n = Number(await vault.marketCount());
-  const byToken = {};
+  // a market is identified by its collateral token AND its price feed (a token can have a regular and a 24/7 market)
+  const byKey = {};
   for (let i = 0; i < n; i++) {
     const addr = await vault.markets(i);
-    byToken[(await new ethers.Contract(addr, MKT, rpc).collateralToken()).toLowerCase()] = addr;
+    const k = new ethers.Contract(addr, MKT, rpc);
+    const [tok, orc] = await Promise.all([k.collateralToken(), k.collateralOracle()]);
+    const feed = await new ethers.Contract(orc, ORC, rpc).feed();
+    byKey[(tok + feed).toLowerCase()] = addr;
   }
   const saved = store.get();
   const out = [];
   for (const m of X.newMarkets) {
-    const s = { m, checks: [], ok: true, oracle: null, market: null, added: byToken[m.token.toLowerCase()] || null };
+    const s = { m, checks: [], ok: true, oracle: null, market: null, added: byKey[(m.token + m.feed).toLowerCase()] || null };
     // token + feed checks
     try {
       const t = new ethers.Contract(m.token, ERC20, rpc), f = new ethers.Contract(m.feed, FEED, rpc);
@@ -79,11 +86,11 @@ async function readState() {
     }
     if (s.added) { s.market = s.added; out.push(s); continue; }
     // resume: a previously deployed oracle / market is reused only if it matches exactly
-    const sv = saved[m.symbol] || {};
+    const sv = saved[id(m)] || {};
     if (sv.oracle && (await rpc.getCode(sv.oracle)) !== "0x") {
       const o = new ethers.Contract(sv.oracle, ORC, rpc);
       try {
-        if (same(await o.feed(), m.feed) && same(await o.calendar(), D.calendar) && same(await o.owner(), owner)) s.oracle = sv.oracle;
+        if (same(await o.feed(), m.feed) && same(await o.calendar(), is247(m) ? ethers.ZeroAddress : D.calendar) && same(await o.owner(), owner)) s.oracle = sv.oracle;
       } catch {}
     }
     if (s.oracle && sv.market && (await rpc.getCode(sv.market)) !== "0x") {
@@ -108,10 +115,10 @@ function render() {
     const status = s.added ? `<span class="tag ok">Live</span>` : !s.ok ? `<span class="tag bad">Check failed</span>` : `<span class="tag warn">Pending</span>`;
     const addrs = [s.oracle && `oracle ${link(s.oracle)}`, s.market && `market ${link(s.market)}`].filter(Boolean).join(" · ");
     return `<tr>
-      <td><b>${s.m.symbol}</b> ${status}<br><span class="lead" style="font-size:13px">${s.m.name} · LTV ${s.m.ltv * 100}% / liq. ${s.m.lt * 100}%</span></td>
+      <td><b>${id(s.m)}</b> ${status}<br><span class="lead" style="font-size:13px">${s.m.name} · LTV ${Math.round(s.m.ltv * 100)}% / liq. ${Math.round(s.m.lt * 100)}% · bonus ${((s.m.bonus ?? X.params.liquidationBonus) * 100).toFixed(1)}% · cap ${ethers.formatUnits(capOf(s.m), 6)} USDG${is247(s.m) ? ` · fresh if updated within ${s.m.window / 3600}h` : " · NYSE hours"}</span></td>
       <td style="font-size:13px">${s.checks.join("<br>")}</td>
       <td><div class="steps">${steps}</div><div style="font-size:12.5px;margin-top:6px">${addrs}</div></td>
-      <td>${s.added ? "" : `<button class="btn sm" data-add="${s.m.symbol}" ${canAct() && s.ok ? "" : "disabled"}>Add</button>`}</td>
+      <td>${s.added ? "" : `<button class="btn sm" data-add="${id(s.m)}" ${canAct() && s.ok ? "" : "disabled"}>Add</button>`}</td>
     </tr>`;
   }).join("");
   document.querySelectorAll("[data-add]").forEach((b) => (b.onclick = () => run([b.dataset.add])));
@@ -127,7 +134,7 @@ const canAct = () => !busy && signer && same(account, owner);
 function showDone() {
   const live = state.filter((s) => s.added);
   $("done").innerHTML = `<div class="note">All ${live.length} new markets are live. Tell Claude they are done, so the app, docs and site can be updated.</div>
-  <pre class="out">${JSON.stringify(live.map((s) => ({ symbol: s.m.symbol, market: s.added })), null, 2)}</pre>`;
+  <pre class="out">${JSON.stringify(live.map((s) => ({ market: id(s.m), address: s.added })), null, 2)}</pre>`;
 }
 
 async function refresh() {
@@ -187,43 +194,46 @@ async function fees() {
 }
 
 async function step(s) {
-  const m = s.m, P = X.params;
+  const m = s.m, P = X.params, name = id(m);
   if (!s.oracle) {
-    log(`${m.symbol}: deploy StockOracle — confirm in your wallet…`);
+    log(`${name}: deploy StockOracle — confirm in your wallet…`);
     const f = new ethers.ContractFactory(X.StockOracle.abi, X.StockOracle.bytecode, signer);
-    const c = await f.deploy(owner, m.feed, D.calendar, P.inSessionMaxAge, P.hardMaxAge, await fees());
+    // 24/7: no exchange calendar, fresh while the feed updated within m.window
+    const c = is247(m)
+      ? await f.deploy(owner, m.feed, ethers.ZeroAddress, m.window, m.window, await fees())
+      : await f.deploy(owner, m.feed, D.calendar, P.inSessionMaxAge, P.hardMaxAge, await fees());
     const addr = await c.getAddress();
-    store.set(m.symbol, { oracle: addr, market: null });
-    log(`${m.symbol}: oracle tx ${c.deploymentTransaction().hash} → ${addr}, waiting…`);
+    store.set(name, { oracle: addr, market: null });
+    log(`${name}: oracle tx ${c.deploymentTransaction().hash} → ${addr}, waiting…`);
     await c.waitForDeployment();
     s.oracle = addr;
-    log(`${m.symbol}: ✓ oracle ${addr}`, "ok");
+    log(`${name}: ✓ oracle ${addr}`, "ok");
     render();
   }
   if (!s.market) {
-    log(`${m.symbol}: deploy LendingMarket — confirm in your wallet…`);
+    log(`${name}: deploy LendingMarket — confirm in your wallet…`);
     const f = new ethers.ContractFactory(X.LendingMarket.abi, X.LendingMarket.bytecode, signer);
     const c = await f.deploy({
       owner, vault: D.vault, treasury: D.treasury || owner, collateralToken: m.token, borrowToken: D.usdg.address,
       collateralOracle: s.oracle, borrowOracle: D.usdg.oracle, irm: D.irm,
-      ltv: WAD(m.ltv), liquidationThreshold: WAD(m.lt), liquidationBonus: WAD(P.liquidationBonus),
+      ltv: WAD(m.ltv), liquidationThreshold: WAD(m.lt), liquidationBonus: WAD(m.bonus ?? P.liquidationBonus),
       reserveFactor: WAD(P.reserveFactor), borrowFee: WAD(P.borrowFee),
     }, await fees());
     const addr = await c.getAddress();
-    store.set(m.symbol, { market: addr });
-    log(`${m.symbol}: market tx ${c.deploymentTransaction().hash} → ${addr}, waiting…`);
+    store.set(name, { market: addr });
+    log(`${name}: market tx ${c.deploymentTransaction().hash} → ${addr}, waiting…`);
     await c.waitForDeployment();
     s.market = addr;
-    log(`${m.symbol}: ✓ market ${addr}`, "ok");
+    log(`${name}: ✓ market ${addr}`, "ok");
     render();
   }
-  log(`${m.symbol}: vault.addMarket (cap ${ethers.formatUnits(cap, 6)} USDG) — confirm in your wallet…`);
+  log(`${name}: vault.addMarket (cap ${ethers.formatUnits(capOf(m), 6)} USDG) — confirm in your wallet…`);
   const vault = new ethers.Contract(D.vault, VAULT, signer);
-  const tx = await vault.addMarket(s.market, cap, await fees());
-  log(`${m.symbol}: addMarket tx ${tx.hash}, waiting…`);
+  const tx = await vault.addMarket(s.market, capOf(m), await fees());
+  log(`${name}: addMarket tx ${tx.hash}, waiting…`);
   await tx.wait();
   s.added = s.market;
-  log(`${m.symbol}: ✓ live in the vault`, "ok");
+  log(`${name}: ✓ live in the vault`, "ok");
 }
 
 async function run(symbols) {
@@ -231,7 +241,7 @@ async function run(symbols) {
   busy = true;
   render();
   try {
-    for (const s of state.filter((x) => symbols.includes(x.m.symbol) && !x.added && x.ok)) await step(s);
+    for (const s of state.filter((x) => symbols.includes(id(x.m)) && !x.added && x.ok)) await step(s);
   } catch (e) {
     log(`✗ ${reason(e)} — nothing is lost: press Add again to resume from the last confirmed step.`, "bad");
   } finally {
@@ -247,7 +257,7 @@ if (!D || !X) {
   $("net").textContent = LOCAL ? "Local test chain (31337)" : `Robinhood Chain (${D.chainId})`;
   if (LOCAL) { $("localBtn").hidden = false; $("localBtn").onclick = connectLocal; }
   $("connectBtn").onclick = () => connect().catch((e) => log(`✗ ${reason(e)}`, "bad"));
-  $("runAll").onclick = () => run(state.filter((s) => !s.added).map((s) => s.m.symbol));
+  $("runAll").onclick = () => run(state.filter((s) => !s.added).map((s) => id(s.m)));
   log(`Build ${X.build} · ${X.newMarkets.length} market(s) configured · reading ${READ_URL}`);
   refresh();
 }
