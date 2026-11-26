@@ -28,9 +28,6 @@ PAGES = {
     "privacy.html": ("Privacy Policy | Cirrava",
                      "No accounts, no tracking cookies, no analytics: what little data cirrava.xyz processes, and by whom.",
                      "/privacy"),
-    "risk.html": ("Risk Disclosure | Cirrava",
-                  "The risks of lending and borrowing on Cirrava: unaudited contracts, admin key, liquidations, market-hours price gaps, oracles and more.",
-                  "/risk"),
     "404.html": ("Page not found | Cirrava", None, None),
 }
 

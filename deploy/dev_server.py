@@ -22,7 +22,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
         p = path.split("?", 1)[0].split("#", 1)[0]
         if p == "/docs" or p.startswith("/docs/"):
             path = "/docs.html"
-        elif p in ("/terms", "/privacy", "/risk"):
+        elif p in ("/terms", "/privacy"):
             path = p + ".html"
         elif p.startswith("/app/") and not Path(ROOT, p.lstrip("/")).is_file():
             path = "/app/index.html"

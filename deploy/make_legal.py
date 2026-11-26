@@ -1,4 +1,4 @@
-"""Generates the legal pages (terms.html, privacy.html, risk.html) from one template, so they share
+"""Generates the legal pages (terms.html, privacy.html) from one template, so they share
 layout and navigation. Edit the text here, then run:
 
   python deploy/make_legal.py && python deploy/add_meta.py
@@ -15,12 +15,11 @@ OWNER = "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1"
 PAGES = {
     "terms": ("Terms of Use", "Terms of Use | Cirrava"),
     "privacy": ("Privacy Policy", "Privacy Policy | Cirrava"),
-    "risk": ("Risk Disclosure", "Risk Disclosure | Cirrava"),
 }
 
 TERMS = f"""
 <p class="lead">These terms apply when you use cirrava.xyz, the Cirrava app and the Cirrava smart contracts on Robinhood Chain. By using any of them you accept these terms. If you do not accept them, do not use Cirrava.</p>
-<div class="note">Cirrava is experimental software that has not been audited. You can lose everything you deposit or post as collateral. Read the <a href="/risk">Risk Disclosure</a> before you use it.</div>
+<div class="note">Cirrava is experimental software that has not been audited. You can lose everything you deposit or post as collateral. Read the <a href="/docs/risks">risks</a> before you use it.</div>
 
 <h2 id="what">1. What Cirrava is</h2>
 <p>Cirrava is a set of smart contracts on Robinhood Chain (chain ID 4663) that let people lend USDG through an Earn vault and borrow USDG against Robinhood Stock Tokens, together with a website and app that read those contracts and help you send transactions to them.</p>
@@ -49,7 +48,7 @@ TERMS = f"""
 </ul>
 
 <h2 id="admin">5. Admin powers</h2>
-<p>One wallet, <a href="{EXP}/{OWNER}" target="_blank" rel="noopener"><code>{OWNER[:6]}…{OWNER[-4:]}</code></a>, currently owns every Cirrava contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. The contracts are not upgradeable. Moving ownership to a multisig is planned. The <a href="/risk#admin">Risk Disclosure</a> explains what these powers mean for you.</p>
+<p>One wallet, <a href="{EXP}/{OWNER}" target="_blank" rel="noopener"><code>{OWNER[:6]}…{OWNER[-4:]}</code></a>, currently owns every Cirrava contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. The contracts are not upgradeable. Moving ownership to a multisig is planned. The <a href="/docs/risks">risks</a> section of the docs explains what these powers mean for you.</p>
 
 <h2 id="fees">6. Fees</h2>
 <p>Each borrow pays a 0.1% fee, and 10% of the interest borrowers pay goes to the protocol reserve (the reserve factor). Both go to the treasury address set in the contracts. You also pay Robinhood Chain network fees for every transaction. Fees are enforced by the contracts and may change through the admin powers above.</p>
@@ -121,50 +120,8 @@ PRIVACY = f"""
 <p>Send a direct message to <a href="{X}" target="_blank" rel="noopener">@Cirrava on X</a>.</p>
 """
 
-RISK = f"""
-<p class="lead">Lending and borrowing on Cirrava involves serious risk. You can lose some or all of what you deposit or post as collateral. Only use money you can afford to lose, and read this whole page first.</p>
-<div class="note">Cirrava's contracts are live on mainnet with real assets and <b>have not been audited</b>. A review is not a guarantee, and neither is public source code.</div>
 
-<h2 id="contracts">1. Smart-contract risk</h2>
-<p>The contracts may contain bugs or design flaws that let someone take funds, lock them, or misprice positions. The code is <a href="{GH}" target="_blank" rel="noopener">public</a> and verified, which lets anyone check it, including attackers. The contracts are not upgradeable: a fix means deploying new contracts and moving to them, and funds in the old ones may be affected in the meantime.</p>
-
-<h2 id="admin">2. Admin key risk</h2>
-<p>One wallet owns every contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable at once, and adding a market lets that wallet route vault deposits to it. If that key is lost, stolen or misused, deposits are at risk. Moving ownership to a multisig is planned but not done.</p>
-
-<h2 id="liquidation">3. Liquidation risk</h2>
-<p>If the value of your debt rises above your collateral value times the market's liquidation threshold, anyone can repay part of your debt and take your collateral at a 5% discount. You lose that collateral. Prices can move faster than you can react, and liquidations can happen while you are not watching.</p>
-
-<h2 id="hours">4. Market hours and price gaps</h2>
-<p>Stock Token prices follow US stock markets. While the market is closed (nights, weekends, holidays) the price feed stops, and borrowing and liquidations pause. When the market reopens, the price can jump. A position can open the next session already liquidatable, and liquidation can then take more than a normal move would. Market-hours rules are enforced by an on-chain calendar that may contain mistakes.</p>
-
-<h2 id="oracle">5. Oracle risk</h2>
-<p>Positions are priced from Chainlink feeds on Robinhood Chain. A feed that is delayed, paused, stale, manipulated or simply wrong can block borrowing, block liquidations or cause unfair ones. Cirrava does not control these feeds.</p>
-
-<h2 id="liquidity">6. Liquidity and withdrawal risk</h2>
-<p>Earn vault deposits are lent to borrowers. You can only withdraw USDG that is not lent out. If markets are heavily borrowed, a withdrawal may have to wait until borrowers repay or are liquidated. Interest rates change with utilization and can rise steeply for borrowers.</p>
-
-<h2 id="baddebt">7. Bad debt</h2>
-<p>If collateral loses value too fast to be liquidated in time, or liquidations pause during a price move, a position can end up owing more than its collateral is worth. That shortfall is written off and borne by Earn vault depositors.</p>
-
-<h2 id="assets">8. Stock Token and USDG risk</h2>
-<p>Stock Tokens are issued by third parties, not by Cirrava, and are not shares: holding one does not give you the rights of a shareholder. Their value depends on the issuer, its custody arrangements and its ability to keep the token tracking the stock. Issuers may pause, freeze, restrict or stop supporting their tokens, and regulators may act against them. USDG is a stablecoin issued by a third party; it can lose its peg, or be frozen or restricted by its issuer.</p>
-
-<h2 id="chain">9. Network risk</h2>
-<p>Robinhood Chain may slow down, halt, reorganise or censor transactions, and its fees can change. If it is unavailable, you may be unable to repay or add collateral while liquidations become possible once it resumes.</p>
-
-<h2 id="you">10. Wallet and scam risk</h2>
-<p>If your wallet or seed phrase is compromised, your assets can be taken and nobody can reverse that. Scammers impersonate projects with fake websites, fake tokens and direct messages. Only use cirrava.xyz and the addresses in the <a href="/docs/contracts">docs</a>. Cirrava will never ask for your keys or for payment.</p>
-
-<h2 id="token">11. $CIRRAVA token risk</h2>
-<p>$CIRRAVA is not connected to the lending protocol and gives no claim on fees, revenue or the team. Its price can be extremely volatile and can fall to zero, and its liquidity can disappear.</p>
-
-<h2 id="legal">12. Legal and tax risk</h2>
-<p>Rules for tokenised securities, stablecoins and decentralised lending are unsettled and differ by country. A change in law or enforcement could restrict your access to Cirrava, to Stock Tokens or to USDG, or create tax consequences for you.</p>
-
-<p style="margin-top:40px">More detail on how the protocol behaves is in the <a href="/docs">docs</a>. By using Cirrava you accept these risks and the <a href="/terms">Terms of Use</a>.</p>
-"""
-
-BODIES = {"terms": TERMS, "privacy": PRIVACY, "risk": RISK}
+BODIES = {"terms": TERMS, "privacy": PRIVACY}
 
 SHELL = """<!doctype html>
 <html lang="en">
@@ -221,7 +178,7 @@ footer a{{margin:0 8px;text-decoration:none}}footer a:hover{{color:var(--fg)}}
 {body}
   </main>
 </div>
-<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/risk">Risks</a><a href="/docs">Docs</a><a href="{gh}" target="_blank" rel="noopener">GitHub</a></footer>
+<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/docs/risks">Risks</a><a href="/docs">Docs</a><a href="{gh}" target="_blank" rel="noopener">GitHub</a></footer>
 </body>
 </html>
 """

@@ -70,12 +70,12 @@ footer a{margin:0 8px;text-decoration:none}footer a:hover{color:var(--fg)}
   <nav><a href="/docs">Docs</a><a href="/app/earn">App</a><a href="https://x.com/Cirrava" target="_blank" rel="noopener me">X ↗</a></nav>
 </header>
 <div class="wrap">
-  <nav class="tabs" aria-label="Legal"><a href="/terms" aria-current="page">Terms of Use</a><a href="/privacy">Privacy Policy</a><a href="/risk">Risk Disclosure</a></nav>
+  <nav class="tabs" aria-label="Legal"><a href="/terms" aria-current="page">Terms of Use</a><a href="/privacy">Privacy Policy</a></nav>
   <main>
   <h1>Terms of Use</h1>
   <p class="updated">Last updated 26 November 2026</p>
 <p class="lead">These terms apply when you use cirrava.xyz, the Cirrava app and the Cirrava smart contracts on Robinhood Chain. By using any of them you accept these terms. If you do not accept them, do not use Cirrava.</p>
-<div class="note">Cirrava is experimental software that has not been audited. You can lose everything you deposit or post as collateral. Read the <a href="/risk">Risk Disclosure</a> before you use it.</div>
+<div class="note">Cirrava is experimental software that has not been audited. You can lose everything you deposit or post as collateral. Read the <a href="/docs/risks">risks</a> before you use it.</div>
 
 <h2 id="what">1. What Cirrava is</h2>
 <p>Cirrava is a set of smart contracts on Robinhood Chain (chain ID 4663) that let people lend USDG through an Earn vault and borrow USDG against Robinhood Stock Tokens, together with a website and app that read those contracts and help you send transactions to them.</p>
@@ -104,7 +104,7 @@ footer a{margin:0 8px;text-decoration:none}footer a:hover{color:var(--fg)}
 </ul>
 
 <h2 id="admin">5. Admin powers</h2>
-<p>One wallet, <a href="https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1" target="_blank" rel="noopener"><code>0xa319…0BA1</code></a>, currently owns every Cirrava contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. The contracts are not upgradeable. Moving ownership to a multisig is planned. The <a href="/risk#admin">Risk Disclosure</a> explains what these powers mean for you.</p>
+<p>One wallet, <a href="https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1" target="_blank" rel="noopener"><code>0xa319…0BA1</code></a>, currently owns every Cirrava contract. It can change risk parameters, fees and the interest-rate model, pause markets, add markets to the Earn vault, set caps, move vault liquidity between markets and withdraw protocol reserves. The contracts are not upgradeable. Moving ownership to a multisig is planned. The <a href="/docs/risks">risks</a> section of the docs explains what these powers mean for you.</p>
 
 <h2 id="fees">6. Fees</h2>
 <p>Each borrow pays a 0.1% fee, and 10% of the interest borrowers pay goes to the protocol reserve (the reserve factor). Both go to the treasury address set in the contracts. You also pay Robinhood Chain network fees for every transaction. Fees are enforced by the contracts and may change through the admin powers above.</p>
@@ -134,6 +134,6 @@ footer a{margin:0 8px;text-decoration:none}footer a:hover{color:var(--fg)}
 <p>Send a direct message to <a href="https://x.com/Cirrava" target="_blank" rel="noopener">@Cirrava on X</a>.</p>
   </main>
 </div>
-<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/risk">Risks</a><a href="/docs">Docs</a><a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a></footer>
+<footer><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/docs/risks">Risks</a><a href="/docs">Docs</a><a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a></footer>
 </body>
 </html>
