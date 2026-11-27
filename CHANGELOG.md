@@ -15,6 +15,8 @@ Notable changes to Cirrava's contracts, app and website. Dates are UTC.
   interest-rate model are reused. All 26 v2 contracts are verified on Sourcify (exact match).
 - **v1 retired:** every v1 market is paused with a cap of 0 in the v1 vault
   (record in `protocol/deployments/robinhood-v1.json`).
+- **Retest:** HEY Research Lab retested the fix against the deployed v2 contracts at `476434a`: fixed, all 26
+  contracts match the commit, no new findings at Low or above.
 - **24/7 markets** for NVDA, TSLA and GOOGL, priced by Chainlink's 24/7 feeds: open whenever the price updated
   within 3 hours, weekends included; LTV 50% / 55% (TSLA 35% / 40%), 7.5% liquidation bonus, 5,000 USDG cap.
 
