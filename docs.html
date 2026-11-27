@@ -85,6 +85,7 @@ code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padd
   .search{min-width:0;flex:1}.search .keys{display:none}.search ul{width:min(340px,calc(100vw - 36px))}
   main{padding:32px 18px 90px}h1{font-size:36px}
   table{display:block;overflow-x:auto;white-space:nowrap}
+  table.wrap{display:table;white-space:normal}
   header{padding:12px 18px;gap:14px}header nav{gap:12px}}
 </style>
 </head>
@@ -102,7 +103,7 @@ code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padd
 <div class="layout">
 <aside>
   <div class="g">Overview</div>
-  <a href="/docs">Cirrava</a><a href="/docs/intro">Introduction</a><a href="/docs/how">How it works</a><a href="/docs/hours">Market hours</a><a href="/docs/risks">Risks</a>
+  <a href="/docs">Cirrava</a><a href="/docs/intro">Introduction</a><a href="/docs/how">How it works</a><a href="/docs/hours">Market hours</a><a href="/docs/risks">Risks</a><a href="/docs/roadmap">Roadmap</a>
   <div class="g">Build</div>
   <a href="/docs/contracts">Contracts</a><a href="/docs/token">$CIRRAVA token</a><a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">Source code ↗</a><a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog ↗</a><a href="/app/status">Live status</a>
   <div class="g">More</div>
@@ -225,6 +226,26 @@ code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padd
 
   <h2 id="app">App</h2>
   <p>The app has three tabs: <b>Earn</b> (deposit USDG into the vault), <b>Borrow</b> (open a position in a market) and <b>Portfolio</b> (your positions and health). Connect a wallet to begin.</p>
+
+  <h2 id="roadmap">Roadmap</h2>
+  <p>What is done, and what comes next. We only put a date on something once it is confirmed; until then it says <i>planned</i>.</p>
+  <h3>Done</h3>
+  <table class="wrap"><tr><th>When</th><th>What</th></tr>
+    <tr><td>21 Nov 2026</td><td>Mainnet launch on Robinhood Chain: NVDA, SPY, TSLA and AAPL markets and the USDG Earn vault</td></tr>
+    <tr><td>Nov 2026</td><td>$CIRRAVA token live on Robinhood Chain</td></tr>
+    <tr><td>26 Nov 2026</td><td>Source code public on GitHub, every contract verified on Sourcify; MSFT, QQQ, GOOGL and AMZN markets</td></tr>
+    <tr><td>27 Nov 2026</td><td>Free security review by HEY Research Lab: one Low finding, fixed in v2 and confirmed by their retest (<a href="https://github.com/cirrava/cirrava-xyz/security/advisories/GHSA-7hw7-pqjf-gcxx" target="_blank" rel="noopener">advisory</a>)</td></tr>
+    <tr><td>27 Nov 2026</td><td>v2 contracts, with 24/7 markets for NVDA, TSLA and GOOGL; v1 retired</td></tr></table>
+  <h3>Next</h3>
+  <table class="wrap"><tr><th>Status</th><th>What</th></tr>
+    <tr><td>Planned</td><td><b>Independent audit.</b> No auditor is booked yet. We will announce the auditor and the dates once they are confirmed. Until the audit is done, market caps stay small (10,000 USDG per market, 5,000 for the 24/7 markets).</td></tr>
+    <tr><td>Planned</td><td><b>Multisig ownership.</b> Move ownership of every contract from one wallet to a Safe multisig, so no single key can change risk parameters or move vault liquidity.</td></tr>
+    <tr><td>Planned</td><td><b>Liquidation monitoring.</b> Tooling that watches every position and liquidates unhealthy ones on time, so losses do not fall on lenders.</td></tr></table>
+  <h3>Later</h3>
+  <table class="wrap"><tr><th>Status</th><th>What</th></tr>
+    <tr><td>After the audit</td><td>Higher market caps</td></tr>
+    <tr><td>Planned</td><td>More Stock Token markets, as Robinhood and Chainlink list them on Robinhood Chain</td></tr></table>
+  <p>Contract changes ship as new deployments (the contracts are not upgradeable), and every change is listed in the <a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a>.</p>
 
   <h2 id="blog">Blog</h2>
   <article id="post-v2">
