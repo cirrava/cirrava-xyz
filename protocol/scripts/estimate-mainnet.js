@@ -18,7 +18,7 @@ async function main() {
   };
   const dummy = "0x000000000000000000000000000000000000dEaD";
   const calendar = await est("MarketCalendar", from);
-  const oracle = await est("StockOracle", from, A.markets[0].feed, dummy, 26 * 3600, 97 * 3600);
+  const oracle = await est("StockOracle", from, A.markets[0].feed, dummy, 26 * 3600, 97 * 3600, A.markets[0].token);
   const irm = await est("InterestRateModel", WAD(0.02), WAD(0.08), WAD(1), WAD(0.8));
   const vault = await est("EarnVault", A.usdg.token, from);
   const market = await est("LendingMarket", {

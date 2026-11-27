@@ -29,4 +29,21 @@ contract MockERC20 is ERC20 {
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
     }
+
+    // Robinhood Stock Token status flags (see IStockTokenStatus), settable in tests
+    bool public oraclePaused;
+    bool public paused;
+
+    function setOraclePaused(bool p) external {
+        oraclePaused = p;
+    }
+
+    function setPaused(bool p) external {
+        paused = p;
+    }
+
+    function _update(address from, address to, uint256 value) internal override {
+        require(!paused, "token paused");
+        super._update(from, to, value);
+    }
 }

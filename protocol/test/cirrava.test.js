@@ -29,8 +29,8 @@ async function deploy() {
 
   const calendar = await (await ethers.getContractFactory("MarketCalendar")).deploy(owner.address);
   const Oracle = await ethers.getContractFactory("StockOracle");
-  const nvdaOracle = await Oracle.deploy(owner.address, nvdaFeed, calendar, 26 * 3600, 97 * 3600);
-  const usdgOracle = await Oracle.deploy(owner.address, usdgFeed, ethers.ZeroAddress, 26 * 3600, 26 * 3600);
+  const nvdaOracle = await Oracle.deploy(owner.address, nvdaFeed, calendar, 26 * 3600, 97 * 3600, nvda);
+  const usdgOracle = await Oracle.deploy(owner.address, usdgFeed, ethers.ZeroAddress, 26 * 3600, 26 * 3600, ethers.ZeroAddress);
 
   const irm = await (await ethers.getContractFactory("InterestRateModel")).deploy(E(0.02), E(0.08), E(1), E(0.8));
   const vault = await (await ethers.getContractFactory("EarnVault")).deploy(usdg, owner.address);
@@ -224,5 +224,85 @@ describe("EarnVault + LendingMarket", () => {
     await expect(f.market.connect(f.alice).supplyLiquidity(U(1))).to.be.revertedWith("only vault");
     await f.market.pause();
     await expect(f.market.connect(f.alice).unpause()).to.be.reverted;
+  });
+});
+
+// GHSA-7hw7-pqjf-gcxx (reported by HEY Research Lab): Robinhood sets oraclePaused() on a Stock Token while it
+// processes a corporate action; the price must not be used for borrowing, liquidation or withdrawing against debt.
+describe("Stock Token status flags (GHSA-7hw7-pqjf-gcxx)", () => {
+  async function withPosition() {
+    const f = await loadFixture(deploy);
+    await f.vault.connect(f.alice).deposit(U(50_000), f.alice.address);
+    await f.market.connect(f.bob).depositCollateral(E(10), f.bob.address); // $1,800
+    await f.market.connect(f.bob).borrow(U(750), f.bob.address); // health ≈ 1.56
+    return f;
+  }
+
+  it("reports Paused while the token's oraclePaused() is true, Fresh again after", async () => {
+    const f = await loadFixture(deploy);
+    expect((await f.nvdaOracle.latest())[1]).to.equal(Status.Fresh);
+    await f.nvda.setOraclePaused(true);
+    expect((await f.nvdaOracle.latest())[1]).to.equal(Status.Paused);
+    await f.nvda.setOraclePaused(false);
+    await refresh(f);
+    expect((await f.nvdaOracle.latest())[1]).to.equal(Status.Fresh);
+    expect(await f.nvdaOracle.token()).to.equal(await f.nvda.getAddress());
+  });
+
+  it("does not liquidate a healthy position on a per-share answer during a split (L-1a)", async () => {
+    const f = await withPosition();
+    await f.nvda.setOraclePaused(true);
+    await refresh(f, 18); // per-share price in the processing window: $18 instead of $180
+    await expect(f.market.connect(f.carol).liquidate(f.bob.address, U(375))).to.be.revertedWith(
+      "collateral price not fresh"
+    );
+    await f.nvda.setOraclePaused(false);
+    await refresh(f, 180); // per-token price again
+    await expect(f.market.connect(f.carol).liquidate(f.bob.address, U(375))).to.be.revertedWith("healthy");
+    expect((await f.market.positionOf(f.bob.address)).collateral).to.equal(E(10));
+  });
+
+  it("does not lend against an inflated answer during a reverse split (L-1b)", async () => {
+    const f = await withPosition();
+    await f.nvda.setOraclePaused(true);
+    await refresh(f, 1800); // 10x answer
+    await f.nvda.mint(f.carol.address, E(11));
+    await f.nvda.connect(f.carol).approve(f.market, ethers.MaxUint256);
+    await f.market.connect(f.carol).depositCollateral(E(11), f.carol.address); // adding collateral stays open
+    await expect(f.market.connect(f.carol).borrow(U(9_000), f.carol.address)).to.be.revertedWith(
+      "collateral price not fresh"
+    );
+  });
+
+  it("keeps repaying and adding collateral open while oraclePaused()", async () => {
+    const f = await withPosition();
+    await f.nvda.setOraclePaused(true);
+    await f.market.connect(f.bob).repay(U(100), f.bob.address);
+    await f.nvda.mint(f.bob.address, E(1));
+    await f.market.connect(f.bob).depositCollateral(E(1), f.bob.address);
+    await expect(f.market.connect(f.bob).withdrawCollateral(E(1), f.bob.address)).to.be.revertedWith(
+      "collateral price not fresh"
+    );
+  });
+
+  it("refuses to borrow while the token itself is paused", async () => {
+    const f = await withPosition();
+    await f.nvda.setPaused(true);
+    expect((await f.nvdaOracle.latest())[1]).to.equal(Status.Paused);
+    await expect(f.market.connect(f.bob).borrow(U(10), f.bob.address)).to.be.revertedWith("collateral price not fresh");
+  });
+
+  it("fails closed when the token does not report its status", async () => {
+    const f = await loadFixture(deploy);
+    const Oracle = await ethers.getContractFactory("StockOracle");
+    // the feed contract has no oraclePaused(): treated as unavailable
+    const o = await Oracle.deploy(f.owner.address, f.nvdaFeed, f.calendar, 26 * 3600, 97 * 3600, f.nvdaFeed);
+    expect((await o.latest())[1]).to.equal(Status.Paused);
+  });
+
+  it("skips the check for token = address(0) (USDG)", async () => {
+    const f = await loadFixture(deploy);
+    expect(await f.usdgOracle.token()).to.equal(ethers.ZeroAddress);
+    expect((await f.usdgOracle.latest())[1]).to.equal(Status.Fresh);
   });
 });

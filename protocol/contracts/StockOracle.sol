@@ -4,6 +4,7 @@ pragma solidity ^0.8.24;
 import {Ownable, Ownable2Step} from "@openzeppelin/contracts/access/Ownable2Step.sol";
 import {AggregatorV3Interface} from "./interfaces/AggregatorV3Interface.sol";
 import {MarketCalendar} from "./MarketCalendar.sol";
+import {IStockTokenStatus} from "./interfaces/IStockTokenStatus.sol";
 
 /// @notice What the protocol may do with a price.
 /// Fresh        – usable for borrowing, liquidation and withdrawing collateral against debt.
@@ -11,7 +12,8 @@ import {MarketCalendar} from "./MarketCalendar.sol";
 ///                risk-increasing actions pause.
 /// Stale        – too old even for a closed market, or not updated in session.
 /// Invalid      – zero/negative answer or a timestamp in the future.
-/// Paused       – the adapter was paused by its owner.
+/// Paused       – the adapter was paused by its owner, or the priced Stock Token reports `oraclePaused()`
+///                (corporate action in progress) or `paused()`.
 enum PriceStatus {
     Fresh,
     MarketClosed,
@@ -23,10 +25,15 @@ enum PriceStatus {
 /// @title StockOracle
 /// @notice Wraps a Chainlink feed and classifies its answer against US market hours.
 ///         Pass `calendar = address(0)` for assets that trade 24/7 (e.g. USDG, WETH).
+///         Pass the Stock Token as `token` so the price is treated as unavailable while Robinhood processes a
+///         corporate action (`oraclePaused()`) or the token is paused; `token = address(0)` skips the check
+///         (assets without these flags, e.g. USDG).
 contract StockOracle is Ownable2Step {
     AggregatorV3Interface public immutable feed;
     MarketCalendar public immutable calendar;
     uint8 public immutable feedDecimals;
+    /// @notice the Stock Token this oracle prices, whose status flags gate the price (address(0) = none)
+    address public immutable token;
 
     /// @notice max age of an answer while the market is in session (or always, for 24/7 assets)
     uint256 public maxAgeInSession;
@@ -37,11 +44,17 @@ contract StockOracle is Ownable2Step {
     event WindowsSet(uint256 maxAgeInSession, uint256 maxAgeHard);
     event PausedSet(bool paused);
 
-    constructor(address owner_, AggregatorV3Interface feed_, MarketCalendar calendar_, uint256 inSession, uint256 hard)
-        Ownable(owner_)
-    {
+    constructor(
+        address owner_,
+        AggregatorV3Interface feed_,
+        MarketCalendar calendar_,
+        uint256 inSession,
+        uint256 hard,
+        address token_
+    ) Ownable(owner_) {
         feed = feed_;
         calendar = calendar_;
+        token = token_;
         feedDecimals = feed_.decimals();
         require(feedDecimals <= 18, "decimals");
         _setWindows(inSession, hard);
@@ -70,7 +83,7 @@ contract StockOracle is Ownable2Step {
         (, int256 answer,, uint256 upd,) = feed.latestRoundData();
         updatedAt = upd;
         if (answer > 0) priceWad = uint256(answer) * 10 ** (18 - feedDecimals);
-        if (paused) return (priceWad, PriceStatus.Paused, upd);
+        if (paused || _tokenPaused()) return (priceWad, PriceStatus.Paused, upd);
         if (answer <= 0 || upd == 0 || upd > block.timestamp) return (priceWad, PriceStatus.Invalid, upd);
 
         uint256 age = block.timestamp - upd;
@@ -87,5 +100,20 @@ contract StockOracle is Ownable2Step {
             return (priceWad, block.timestamp - open <= maxAgeInSession ? PriceStatus.MarketClosed : PriceStatus.Stale, upd);
         }
         return (priceWad, age <= maxAgeInSession ? PriceStatus.Fresh : PriceStatus.Stale, upd);
+    }
+
+    /// @dev Fails closed: if the token does not answer, the price is treated as unavailable.
+    function _tokenPaused() internal view returns (bool) {
+        if (token == address(0)) return false;
+        try IStockTokenStatus(token).oraclePaused() returns (bool p) {
+            if (p) return true;
+        } catch {
+            return true;
+        }
+        try IStockTokenStatus(token).paused() returns (bool p) {
+            return p;
+        } catch {
+            return true;
+        }
     }
 }

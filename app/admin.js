@@ -23,7 +23,7 @@ const MKT = [
   "function borrowOracle() view returns (address)",
   "function owner() view returns (address)",
 ];
-const ORC = ["function feed() view returns (address)", "function calendar() view returns (address)", "function owner() view returns (address)"];
+const ORC = ["function feed() view returns (address)", "function calendar() view returns (address)", "function owner() view returns (address)", "function token() view returns (address)"];
 const ERC20 = ["function symbol() view returns (string)", "function decimals() view returns (uint8)"];
 const FEED = ["function description() view returns (string)", "function decimals() view returns (uint8)", "function latestRoundData() view returns (uint80,int256,uint256,uint256,uint80)"];
 
@@ -90,7 +90,7 @@ async function readState() {
     if (sv.oracle && (await rpc.getCode(sv.oracle)) !== "0x") {
       const o = new ethers.Contract(sv.oracle, ORC, rpc);
       try {
-        if (same(await o.feed(), m.feed) && same(await o.calendar(), is247(m) ? ethers.ZeroAddress : D.calendar) && same(await o.owner(), owner)) s.oracle = sv.oracle;
+        if (same(await o.feed(), m.feed) && same(await o.calendar(), is247(m) ? ethers.ZeroAddress : D.calendar) && same(await o.token(), m.token) && same(await o.owner(), owner)) s.oracle = sv.oracle;
       } catch {}
     }
     if (s.oracle && sv.market && (await rpc.getCode(sv.market)) !== "0x") {
@@ -200,8 +200,8 @@ async function step(s) {
     const f = new ethers.ContractFactory(X.StockOracle.abi, X.StockOracle.bytecode, signer);
     // 24/7: no exchange calendar, fresh while the feed updated within m.window
     const c = is247(m)
-      ? await f.deploy(owner, m.feed, ethers.ZeroAddress, m.window, m.window, await fees())
-      : await f.deploy(owner, m.feed, D.calendar, P.inSessionMaxAge, P.hardMaxAge, await fees());
+      ? await f.deploy(owner, m.feed, ethers.ZeroAddress, m.window, m.window, m.token, await fees())
+      : await f.deploy(owner, m.feed, D.calendar, P.inSessionMaxAge, P.hardMaxAge, m.token, await fees());
     const addr = await c.getAddress();
     store.set(name, { oracle: addr, market: null });
     log(`${name}: oracle tx ${c.deploymentTransaction().hash} → ${addr}, waiting…`);

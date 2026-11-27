@@ -93,7 +93,7 @@ async function main() {
   const calendar = await deploy("MarketCalendar", deployer.address);
   await send(calendar.setHolidays(HOLIDAYS.map(nyDayNumber), true, ov));
   for (const d of EARLY_CLOSES) await send(calendar.setEarlyClose(nyDayNumber(d), 13 * 3600, ov));
-  const usdgOracle = await deploy("StockOracle", deployer.address, A.usdg.feed, ethers.ZeroAddress, 26 * 3600, 26 * 3600);
+  const usdgOracle = await deploy("StockOracle", deployer.address, A.usdg.feed, ethers.ZeroAddress, 26 * 3600, 26 * 3600, ethers.ZeroAddress);
   const irm = await deploy("InterestRateModel", WAD(0.02), WAD(0.08), WAD(1), WAD(0.8));
   const vault = await deploy("EarnVault", A.usdg.token, deployer.address);
 
@@ -116,7 +116,7 @@ async function main() {
 
   // ---- 3. one isolated market per Stock Token
   for (const m of A.markets) {
-    const oracle = await deploy("StockOracle", deployer.address, m.feed, await calendar.getAddress(), 26 * 3600, 97 * 3600);
+    const oracle = await deploy("StockOracle", deployer.address, m.feed, await calendar.getAddress(), 26 * 3600, 97 * 3600, m.token);
     const market = await deploy("LendingMarket", {
       owner: deployer.address,
       vault: await vault.getAddress(),

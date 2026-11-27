@@ -75,7 +75,7 @@ async function main() {
     const m = todo[0];
     const OF = await ethers.getContractFactory("StockOracle");
     const LF = await ethers.getContractFactory("LendingMarket");
-    const oTx = await OF.getDeployTransaction(owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600);
+    const oTx = await OF.getDeployTransaction(owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600, m.token);
     const gO = await ethers.provider.estimateGas({ ...oTx, from: owner });
     const mTx = await LF.getDeployTransaction({
       owner, vault: dep.vault, treasury: dep.treasury, collateralToken: m.token, borrowToken: dep.usdg.address,
@@ -108,8 +108,8 @@ async function main() {
     console.log(`\n${key(m)}`);
     // 24/7: no calendar, a price is Fresh while younger than `window`; regular: NYSE calendar, 26h / 97h windows
     const oracle = h247
-      ? await deploy("StockOracle", owner, m.feed, ethers.ZeroAddress, m.window, m.window)
-      : await deploy("StockOracle", owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600);
+      ? await deploy("StockOracle", owner, m.feed, ethers.ZeroAddress, m.window, m.window, m.token)
+      : await deploy("StockOracle", owner, m.feed, dep.calendar, 26 * 3600, 97 * 3600, m.token);
     const market = await deploy("LendingMarket", {
       owner,
       vault: dep.vault,

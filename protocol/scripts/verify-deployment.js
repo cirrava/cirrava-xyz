@@ -35,7 +35,7 @@ async function main() {
   ok((await vault.symbol()) === "cvUSDG", "vault share token cvUSDG");
 
   const usdgOracle = await at("StockOracle", dep.usdg.oracle);
-  ok(same(await usdgOracle.feed(), dep.usdg.feed) && same(await usdgOracle.calendar(), ethers.ZeroAddress), "USDG oracle → USDG/USD feed, 24/7");
+  ok(same(await usdgOracle.feed(), dep.usdg.feed) && same(await usdgOracle.calendar(), ethers.ZeroAddress) && same(await usdgOracle.token(), ethers.ZeroAddress), "USDG oracle → USDG/USD feed, 24/7, no token check");
 
   for (let i = 0; i < dep.markets.length; i++) {
     const m = dep.markets[i];
@@ -52,6 +52,7 @@ async function main() {
       same(await mk.irm(), dep.irm),
       same(await mk.treasury(), dep.treasury),
       same(await or.feed(), m.feed),
+      same(await or.token(), m.token),
       m.hours === "24/7" ? same(await or.calendar(), ethers.ZeroAddress) && (await or.maxAgeInSession()) === BigInt(m.window) : same(await or.calendar(), dep.calendar),
       info.ltv === ethers.parseUnits(String(m.ltv), 18),
       info.liquidationThreshold === ethers.parseUnits(String(m.lt), 18),
