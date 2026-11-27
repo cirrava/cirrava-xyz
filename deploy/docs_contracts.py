@@ -23,10 +23,31 @@ def pct(x):
 
 cap = dep.get("capPerMarket", "10000").split(".")[0]
 cap_fmt = f"{int(cap):,}"
+v1 = json.loads((ROOT / "protocol" / "deployments" / "robinhood-v1.json").read_text(encoding="utf-8"))
+from datetime import date
+
+_d = date.fromisoformat(dep["deployedAt"][:10])
+v2_date = f"{_d.day} {_d:%B %Y}"
+
+
+def label(m):
+    return m["symbol"] + (" 24/7" if m.get("hours") == "24/7" else "")
+
+
+def hours(m):
+    return f'24/7 (price ≤ {m["window"] // 3600}h old)' if m.get("hours") == "24/7" else "NYSE hours"
+
+
 mrows = "\n".join(
-    f'    <tr><td>{m["symbol"]}/USDG</td><td>{a(m["market"])}</td><td>{a(m["oracle"])}</td><td>{pct(m["ltv"])} / {pct(m["lt"])}</td></tr>'
+    f'    <tr><td>{label(m)}/USDG</td><td>{a(m["market"])}</td><td>{a(m["oracle"])}</td><td>{pct(m["ltv"])} / {pct(m["lt"])}</td>'
+    f'<td>{m.get("bonus", 0.05) * 100:g}%</td><td>{int(m.get("cap", cap)):,}</td><td>{hours(m)}</td></tr>'
     for m in dep["markets"]
 )
+v1rows = "\n".join(
+    [f'    <tr><td>EarnVault v1</td><td>{a(v1["vault"])}</td></tr>']
+    + [f'    <tr><td>{m["symbol"]}/USDG v1</td><td>{a(m["market"])}</td></tr>' for m in v1["markets"]]
+)
+window_h = next((m["window"] for m in dep["markets"] if m.get("hours")), 10800) // 3600
 core = "\n".join([
     f'    <tr><td>EarnVault (cvUSDG)</td><td>{a(dep["vault"])}</td></tr>',
     f'    <tr><td>MarketCalendar</td><td>{a(dep["calendar"])}</td></tr>',
@@ -36,9 +57,10 @@ core = "\n".join([
 ])
 tokens = "\n".join(
     [f'    <tr><td>USDG</td><td>{a(dep["usdg"]["address"])}</td><td>6</td><td>{a(dep["usdg"]["feed"])}</td></tr>']
-    + [f'    <tr><td>{m["symbol"]}</td><td>{a(m["token"])}</td><td>18</td><td>{a(m["feed"])}</td></tr>' for m in dep["markets"]]
+    + [f'    <tr><td>{m["symbol"]}{" (24/7 feed)" if m.get("hours") else ""}</td><td>{a(m["token"])}</td><td>18</td><td>{a(m["feed"])}</td></tr>' for m in dep["markets"]]
 )
-symbols = ", ".join(m["symbol"] for m in dep["markets"][:-1]) + " or " + dep["markets"][-1]["symbol"]
+uniq = list(dict.fromkeys(m["symbol"] for m in dep["markets"]))
+symbols = ", ".join(uniq[:-1]) + " or " + uniq[-1]
 
 NEW = f"""  <h2 id="intro">Introduction</h2>
   <p>Cirrava lets you borrow against Stock Tokens without selling them, and lets lenders earn yield on the stablecoin the borrowing is denominated in. It is live on Robinhood Chain mainnet (chain ID {dep["chainId"]}) since 21 November 2026.</p>
@@ -59,7 +81,7 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
   <h3>Health and liquidation</h3>
   <p>Two thresholds, with a deliberate gap: the <b>LTV</b> caps what you may borrow, and the <b>liquidation threshold</b> is where a position becomes liquidatable.</p>
   <p><code>borrowed value &gt; collateral value × liquidation threshold</code></p>
-  <p>A liquidator may repay up to half of an unhealthy position's debt (all of it below $100) and receives collateral worth the repaid amount plus a 5% bonus.</p>
+  <p>A liquidator may repay up to half of an unhealthy position's debt (all of it below $100) and receives collateral worth the repaid amount plus a bonus: 5% in the regular markets, 7.5% in the 24/7 markets.</p>
 
   <h2 id="hours">Market hours</h2>
   <p>The on-chain calendar follows the NYSE regular session, 09:30–16:00 New York time, Monday to Friday. US daylight-saving time is computed in the contract; NYSE holidays and early closes for 2026–2027 are stored on-chain.</p>
@@ -72,19 +94,24 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
     <tr><td>Borrowing</td><td>Paused</td></tr>
     <tr><td>Liquidation</td><td>Paused</td></tr></table>
   <p>Everything that reduces risk stays available; everything that takes a new position on a frozen price does not. After the open, a price published before the open still counts as closed until Chainlink publishes a fresh in-session price.</p>
+  <h3 id="markets-247">24/7 markets</h3>
+  <p>NVDA, TSLA and GOOGL also have a 24/7 market, priced by Chainlink's 24/7 feeds for those Stock Tokens. These markets have no exchange calendar: borrowing and liquidations are open whenever the price updated within the last {window_h} hours, weekends included, and pause when the feed goes quiet. Off-hours prices are thinner and can jump, so these markets have lower LTVs, a 7.5% liquidation bonus and a smaller cap. The regular markets for the same tokens keep following NYSE hours.</p>
+  <h3 id="corporate-actions">Splits and corporate actions</h3>
+  <p>While Robinhood processes a corporate action on a Stock Token (a split, reverse split or dividend reinvested through the token's multiplier) the token reports <code>oraclePaused()</code>, and Robinhood says the price must not be trusted until it clears. Every Cirrava price oracle reads that flag, and the token's own <code>paused()</code>: while either is set, borrowing, liquidations and withdrawing collateral against debt pause for that token, exactly as when the market is closed. Repaying and adding collateral stay open.</p>
 
   <h2 id="risks">Risks</h2>
   <div class="note">Read this before you deposit or borrow. Cirrava's contracts have not been audited. Deposits and loans use real assets and can be lost.</div>
   <h3>Admin key</h3><p>One wallet currently owns every contract. It can change risk parameters, fees and the interest-rate model, pause a market, add markets to the Earn vault, set their caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable, and adding a market lets that wallet route vault deposits to it, so a lost or stolen admin key puts deposits at risk. Moving ownership to a multisig is on the roadmap.</p>
   <h3>No upgrades</h3><p>The contracts are not upgradeable proxies: the code at each address is fixed. A fix would mean deploying new contracts.</p>
   <h3>Oracle dependencies</h3><p>Positions are priced from Chainlink's feeds on Robinhood Chain. A paused, stale or wrong feed stops or misprices borrowing and liquidations.</p>
+  <h3>Security review</h3><p>HEY Research Lab reviewed the contracts for free in November 2026 and reported one Low-severity issue: the price oracles did not read the Stock Token's <code>oraclePaused()</code> flag during corporate actions. It was fixed in v2 (see <a href="/docs/corporate-actions">Splits and corporate actions</a>) before any deposits. A security review is not an audit and is no guarantee that the code is safe.</p>
   <h3>Weekend gaps</h3><p>Prices can move sharply between Friday's close and Monday's open; a position can open the week already liquidatable.</p>
   <h3>Liquidity</h3><p>Vault withdrawals are limited to USDG that is not lent out. If markets are fully borrowed, a withdrawal waits until borrowers repay.</p>
 
   <h2 id="contracts">Contracts</h2>
-  <p>Robinhood Chain mainnet, chain ID {dep["chainId"]}, deployed 21 November 2026. Every address links to the explorer. Source code, tests and the deployment record are on <a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a>; changes are listed in the <a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a>.</p>
+  <p>Robinhood Chain mainnet, chain ID {dep["chainId"]}. These are the v2 contracts, deployed {v2_date} with the oracle fix; the market calendar and interest-rate model are unchanged from the 21 November launch. Every address links to the explorer. Source code, tests and the deployment record are on <a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">GitHub</a>; changes are listed in the <a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">changelog</a>.</p>
   <h3>Markets</h3>
-  <table><tr><th>Market</th><th>LendingMarket</th><th>Price oracle</th><th>LTV / Liq.</th></tr>
+  <table><tr><th>Market</th><th>LendingMarket</th><th>Price oracle</th><th>LTV / Liq.</th><th>Bonus</th><th>Cap (USDG)</th><th>Hours</th></tr>
 {mrows}</table>
   <h3>Core</h3>
   <table><tr><th>Contract</th><th>Address</th></tr>
@@ -93,6 +120,10 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
   <table><tr><th>Token</th><th>Address</th><th>Decimals</th><th>Total supply</th></tr>
     <tr><td>CIRRAVA</td><td>{a(CIRRAVA)}</td><td>18</td><td>1,000,000,000</td></tr></table>
   <p>ERC-20 on Robinhood Chain. The contract has no owner and is not upgradeable. Check the address above before you trade: anyone can create a token with the same name.</p>
+  <h3 id="v1">Retired v1 contracts</h3>
+  <p>The first deployment (21 November 2026) was replaced by v2 before it held any deposits. Every v1 market is paused and has a cap of 0 in the v1 vault, so nothing can be lent or borrowed through it. Do not send funds to these addresses.</p>
+  <table><tr><th>Contract</th><th>Address</th></tr>
+{v1rows}</table>
   <h3>Assets (issued by Robinhood, Paxos and Chainlink, not by Cirrava)</h3>
   <table><tr><th>Token</th><th>Address</th><th>Decimals</th><th>Chainlink feed</th></tr>
 {tokens}</table>

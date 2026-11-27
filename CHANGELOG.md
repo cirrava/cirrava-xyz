@@ -2,6 +2,22 @@
 
 Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 
+## 2026-11-27 — v2: security fix and 24/7 markets
+
+- **Security (GHSA-7hw7-pqjf-gcxx, Low):** `StockOracle` did not read a Robinhood Stock Token's `oraclePaused()`
+  flag, which Robinhood sets while it processes a corporate action (split, reverse split, dividend through the
+  multiplier). A wrongly scaled answer in that window could have let healthy positions be liquidated cheaply or a
+  market's cash be borrowed against inflated collateral. `StockOracle` now takes the token and returns `Paused`
+  while `oraclePaused()` or `paused()` is set (fail-closed). No funds were ever at risk: the vault was empty.
+  Reported privately by HEY Research Lab (@HeyResearch) in a free security review (not an audit).
+- Contracts are not upgradeable, so Cirrava was redeployed as **v2**: new Earn vault
+  [`0xd1251c9402fDb71C95B766BE425E9a0076de0Ac8`](https://robinhoodchain.blockscout.com/address/0xd1251c9402fDb71C95B766BE425E9a0076de0Ac8), new oracles and markets; the market calendar and
+  interest-rate model are reused. All 26 v2 contracts are verified on Sourcify (exact match).
+- **v1 retired:** every v1 market is paused with a cap of 0 in the v1 vault
+  (record in `protocol/deployments/robinhood-v1.json`).
+- **24/7 markets** for NVDA, TSLA and GOOGL, priced by Chainlink's 24/7 feeds: open whenever the price updated
+  within 3 hours, weekends included; LTV 50% / 55% (TSLA 35% / 40%), 7.5% liquidation bonus, 5,000 USDG cap.
+
 ## 2026-11-26 — Four new markets
 
 - Added MSFT, QQQ, GOOGL and AMZN markets to the live Earn vault (cap 10,000 USDG each); the vault now

@@ -6,15 +6,7 @@ const path = require("path");
 const { ethers } = require("ethers");
 const dep = require("../deployments/robinhood.json");
 
-const bi = path.join(__dirname, "..", "artifacts", "build-info");
-const build = JSON.parse(fs.readFileSync(path.join(bi, fs.readdirSync(bi)[0]), "utf8"));
-const out = (file, name) => build.output.contracts[file][name].evm.deployedBytecode;
-
-function mask(hex, refs) {
-  const b = Buffer.from(hex.replace(/^0x/, ""), "hex");
-  for (const list of Object.values(refs || {})) for (const { start, length } of list) b.fill(0, start, start + length);
-  return b.toString("hex");
-}
+const { builds, findBuild } = require("./lib/builds");
 
 (async () => {
   const p = new ethers.JsonRpcProvider(process.env.RPC_URL || dep.rpcUrl);
@@ -30,13 +22,11 @@ function mask(hex, refs) {
   ];
   let bad = 0;
   for (const [file, name, addr] of items) {
-    const d = out(file, name);
-    const onchain = await p.getCode(addr);
-    const same = mask(onchain, d.immutableReferences) === mask(d.object, d.immutableReferences);
-    if (!same) bad++;
-    console.log(`${same ? "✓" : "✗"} ${name.padEnd(18)} ${addr}`);
+    const b = findBuild(file, name, await p.getCode(addr));
+    if (!b) bad++;
+    console.log(`${b ? "✓" : "✗"} ${name.padEnd(18)} ${addr}  ${b ? "build " + b.id.slice(0, 8) : "no matching build"}`);
   }
-  console.log(`solc ${build.solcLongVersion} | build-info ${fs.readdirSync(bi)[0]}`);
+  console.log(`solc ${builds[0]?.solcLongVersion} | ${builds.length} build-info file(s) checked`);
   console.log(bad ? `${bad} MISMATCH` : "all live contracts match this source exactly");
   process.exit(bad ? 1 : 0);
 })();

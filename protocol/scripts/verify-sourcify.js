@@ -6,8 +6,8 @@ const path = require("path");
 const dep = require("../deployments/robinhood.json");
 
 const API = "https://sourcify.dev/server";
-const bi = path.join(__dirname, "..", "artifacts", "build-info");
-const build = JSON.parse(fs.readFileSync(path.join(bi, fs.readdirSync(bi)[0]), "utf8"));
+const { ethers } = require("ethers");
+const { findBuild } = require("./lib/builds");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const items = [
@@ -22,9 +22,13 @@ const items = [
 ];
 
 (async () => {
+  const p = new ethers.JsonRpcProvider(process.env.RPC_URL || dep.rpcUrl);
   for (const [id, addr] of items) {
     const have = await (await fetch(`${API}/v2/contract/${dep.chainId}/${addr}`)).json();
     if (have.match) { console.log(`= ${addr} already ${have.match}`); continue; }
+    const [file, name] = id.split(":");
+    const build = findBuild(file, name, await p.getCode(addr));
+    if (!build) { console.log(`✗ ${addr} no local build matches the deployed code`); continue; }
     const r = await fetch(`${API}/v2/verify/${dep.chainId}/${addr}`, {
       method: "POST",
       headers: { "content-type": "application/json" },

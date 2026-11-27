@@ -3,19 +3,19 @@
   "chainId": 4663,
   "rpcUrl": "https://rpc.mainnet.chain.robinhood.com",
   "explorer": "https://robinhoodchain.blockscout.com",
-  "deployedAt": "2026-11-21T13:52:19.003Z",
+  "deployedAt": "2026-11-27T10:59:42.201Z",
   "deployer": "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1",
   "treasury": "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1",
   "demo247": false,
   "usdg": {
     "address": "0x5fc5360D0400a0Fd4f2af552ADD042D716F1d168",
     "feed": "0x61B7e5650328764B076A108EFF5fa7282a1B9aD2",
-    "oracle": "0xAa2cFF138aeAB9d204eae2406cE1E295deFa22CC",
+    "oracle": "0xB40b5bc73CA6d05Cb4bbEF38c3A66F2B6Ac33C54",
     "decimals": 6
   },
   "calendar": "0x13C77954bE518078Bb88a3A144A06246484Db946",
   "irm": "0x667db67029E681420Ba684a073b7Eb9E52103Cb3",
-  "vault": "0xfF2F860F2eBFe6E615f8f27563f2684334D5de24",
+  "vault": "0xd1251c9402fDb71C95B766BE425E9a0076de0Ac8",
   "capPerMarket": "10000.0",
   "markets": [
     {
@@ -24,8 +24,8 @@
       "decimals": 18,
       "token": "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
       "feed": "0x379EC4f7C378F34a1B47E4F3cbeBCbAC3E8E9F15",
-      "oracle": "0x14bD0ec2B8A8e4023D6C663ee600c54BC155cB04",
-      "market": "0x95477C96CB4dFA66b2baCA583e09eb676FEe0aE4",
+      "oracle": "0xEB23C8f542d82aE7D2b008F5A706480099a8F333",
+      "market": "0x1B170dD830b046888BF43AAd9fd1F4840cedB13e",
       "ltv": 0.6,
       "lt": 0.65
     },
@@ -35,8 +35,8 @@
       "decimals": 18,
       "token": "0x117cc2133c37B721F49dE2A7a74833232B3B4C0C",
       "feed": "0x319724394D3A0e3669269846abE664Cd621f9f6A",
-      "oracle": "0x1963ee19E294B9EBc681092aE116EC51e9A7d976",
-      "market": "0x13EFa3249eA871B0f3fB014386312061D3248620",
+      "oracle": "0x05c25ed95b85093b1780f8703D7314d274293464",
+      "market": "0x3A346a9a07F459965199cFcFaf71e100221b211B",
       "ltv": 0.7,
       "lt": 0.75
     },
@@ -46,8 +46,8 @@
       "decimals": 18,
       "token": "0x322F0929c4625eD5bAd873c95208D54E1c003b2d",
       "feed": "0x4A1166a659A55625345e9515b32adECea5547C38",
-      "oracle": "0x7db44E20D0624371919535130CEEB8eB9763655B",
-      "market": "0xc28c3C4a75590F22B9C97D550b2AC2Bf28603971",
+      "oracle": "0x68c90c705C77bB840394cDBBa7Ee2568Bd604448",
+      "market": "0x48e2F4799Bf02d27Cc65A3B2a412196843d22315",
       "ltv": 0.45,
       "lt": 0.5
     },
@@ -57,8 +57,8 @@
       "decimals": 18,
       "token": "0xaF3D76f1834A1d425780943C99Ea8A608f8a93f9",
       "feed": "0x6B22A786bAa607d76728168703a39Ea9C99f2cD0",
-      "oracle": "0x72AC37a2F20cA55892e8f8fDb4758068F5d12AC8",
-      "market": "0xf8452a202b36dcDBb5da1b45A5fB1b5653295886",
+      "oracle": "0xa3e430E289F03e188bD2786e7434DF71Df2a907a",
+      "market": "0xA0c9Faa385b41152d4a510895dd8EDeCFE8395A5",
       "ltv": 0.6,
       "lt": 0.65
     },
@@ -68,8 +68,8 @@
       "decimals": 18,
       "token": "0xe93237C50D904957Cf27E7B1133b510C669c2e74",
       "feed": "0x45C3C877C15E6BA2EBB19eA114Ea508d14C1Af2E",
-      "oracle": "0x95a530eeeBE6BC5D5Bb761656fB8B91cd4Be315c",
-      "market": "0xd60213409B692911F34f72FeF15DFa160a3216ec",
+      "oracle": "0x993715559388D771329807F5eb5B1a888C7b873D",
+      "market": "0xDa98311B28afAbC00FCAcDcFe91a1BB09Cee8d09",
       "ltv": 0.6,
       "lt": 0.65
     },
@@ -79,8 +79,8 @@
       "decimals": 18,
       "token": "0xD5f3879160bc7c32ebb4dC785F8a4F505888de68",
       "feed": "0x80901d846d5D7B030F26B480776EE3b29374C2ae",
-      "oracle": "0x414fC6b34a47BfDF00ED0C0EAaB57Cde841Dc406",
-      "market": "0x5779B8b6D7b8007D85308dE5bcE32481E6fCFf65",
+      "oracle": "0xe185FF3Bdd46357343a47Ff0DddB5b981F51e787",
+      "market": "0x6529AD756F6440Ad1d4e28634C8C343BecDF1801",
       "ltv": 0.7,
       "lt": 0.75
     },
@@ -90,8 +90,8 @@
       "decimals": 18,
       "token": "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3",
       "feed": "0xF6f373a037c30F0e5010d854385cA89185AE638b",
-      "oracle": "0xe9a85ff6d1fB76Ac2c6a312377F3F89B5FC7CA5C",
-      "market": "0x8E5C541120E2B1F9a908cf21d106Acfd697002E3",
+      "oracle": "0xa117f5AbfA52a07C6dAa2C7c2004332E3cBc14D7",
+      "market": "0xB429f7bd2b0A44B33547cd006A022912B1291E54",
       "ltv": 0.6,
       "lt": 0.65
     },
@@ -101,11 +101,60 @@
       "decimals": 18,
       "token": "0x12f190a9F9d7D37a250758b26824B97CE941bF54",
       "feed": "0xD5a1508ceD74c084eBf3cBe853e2C968fB2a651C",
-      "oracle": "0x917944A698abfa202bDbbce4759ee5Bf8A215D1c",
-      "market": "0x1Fa8085Cd0685f05B04FD0389E3d0E67bbC4e831",
+      "oracle": "0x71aF22ac9e565aF7DD66083B23ac90B1f658f797",
+      "market": "0xB5c8F355b5DD08cac975259C833964600F617fed",
       "ltv": 0.6,
       "lt": 0.65
+    },
+    {
+      "symbol": "NVDA",
+      "hours": "24/7",
+      "window": 10800,
+      "name": "NVIDIA",
+      "decimals": 18,
+      "token": "0xd0601CE157Db5bdC3162BbaC2a2C8aF5320D9EEC",
+      "feed": "0xFE941871d8c2AC48C70A62f864De47090Ef8171d",
+      "oracle": "0x9fCB450B99fEF2527EC8c32397D77E1907ceb47b",
+      "market": "0x4535041bCD7350166b7D4AbE80651fFdB67EeB7F",
+      "ltv": 0.5,
+      "lt": 0.55,
+      "bonus": 0.075,
+      "cap": "5000"
+    },
+    {
+      "symbol": "TSLA",
+      "hours": "24/7",
+      "window": 10800,
+      "name": "Tesla",
+      "decimals": 18,
+      "token": "0x322F0929c4625eD5bAd873c95208D54E1c003b2d",
+      "feed": "0x39eDf5ef54150A30d2C4F1b982FbB8f93050BC37",
+      "oracle": "0x141DCbc433A0f6Abb1dCDe0a1D2c5ACa63E98A27",
+      "market": "0xE029Ddf8fDf72771D363848F86c0bFF04d7e658f",
+      "ltv": 0.35,
+      "lt": 0.4,
+      "bonus": 0.075,
+      "cap": "5000"
+    },
+    {
+      "symbol": "GOOGL",
+      "hours": "24/7",
+      "window": 10800,
+      "name": "Alphabet Class A",
+      "decimals": 18,
+      "token": "0x2e0847E8910a9732eB3fb1bb4b70a580ADAD4FE3",
+      "feed": "0xf7FE6f0Af535f2c1c20Ab6cEB1fa46777c2e1B4E",
+      "oracle": "0xB129B756AB75bbc2378f9721d1109F5EE6DC040b",
+      "market": "0x532e2032b24e19B45E90abaF77Af2BbB09B93366",
+      "ltv": 0.5,
+      "lt": 0.55,
+      "bonus": 0.075,
+      "cap": "5000"
     }
   ],
-  "marketsAddedAt": "2026-11-26T12:58:01.772Z"
+  "version": 2,
+  "fixes": [
+    "GHSA-7hw7-pqjf-gcxx"
+  ],
+  "previous": "deployments/robinhood-v1.json"
 }
