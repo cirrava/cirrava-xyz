@@ -63,7 +63,7 @@ aside .g{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(
 main{padding:48px clamp(20px,5vw,72px) 120px;max-width:820px}
 h1{font-family:"Bodoni Moda",serif;font-weight:500;font-size:44px;line-height:1.05;margin-bottom:14px}
 h2{font-family:"Bodoni Moda",serif;font-weight:500;font-size:28px;margin:64px 0 10px;scroll-margin-top:80px}
-h3{font-size:16px;margin:26px 0 6px}
+h3{font-size:16px;margin:26px 0 6px;scroll-margin-top:80px}
 article{margin:22px 0 34px;padding-bottom:10px;border-bottom:1px solid var(--line);scroll-margin-top:80px}
 article h3{font-family:"Bodoni Moda",serif;font-weight:500;font-size:22px;margin-top:0}
 p{margin:10px 0;color:var(--fg)}
@@ -103,7 +103,7 @@ code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padd
 <div class="layout">
 <aside>
   <div class="g">Overview</div>
-  <a href="/docs">Cirrava</a><a href="/docs/intro">Introduction</a><a href="/docs/how">How it works</a><a href="/docs/hours">Market hours</a><a href="/docs/risks">Risks</a><a href="/docs/roadmap">Roadmap</a>
+  <a href="/docs">Cirrava</a><a href="/docs/intro">Introduction</a><a href="/docs/how">How it works</a><a href="/docs/hours">Market hours</a><a href="/docs/risks">Risks</a><a href="/docs/roadmap">Roadmap</a><a href="/docs/staking">Staking (planned)</a>
   <div class="g">Build</div>
   <a href="/docs/contracts">Contracts</a><a href="/docs/token">$CIRRAVA token</a><a href="https://github.com/cirrava/cirrava-xyz" target="_blank" rel="noopener">Source code ↗</a><a href="https://github.com/cirrava/cirrava-xyz/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Changelog ↗</a><a href="/app/status">Live status</a>
   <div class="g">More</div>
@@ -238,9 +238,18 @@ code{font:13px ui-monospace,Menlo,Consolas,monospace;background:var(--code);padd
     <tr><td>27 Nov 2026</td><td>v2 contracts, with 24/7 markets for NVDA, TSLA and GOOGL; v1 retired</td></tr></table>
   <h3>Next</h3>
   <table class="wrap"><tr><th>Status</th><th>What</th></tr>
-    <tr><td>Planned</td><td><b>Independent audit.</b> No auditor is booked yet. We will announce the auditor and the dates once they are confirmed. Until the audit is done, market caps stay small (10,000 USDG per market, 5,000 for the 24/7 markets).</td></tr>
+    <tr><td>Next · planned</td><td><b>$CIRRAVA staking as a vault safety layer.</b> Stake CIRRAVA as a first-loss layer for the Earn vault: if the vault takes a loss, part of the staked CIRRAVA can be slashed to make lenders whole. It comes before the independent audit on the roadmap. See <a href="/docs/staking">the plan</a>.</td></tr>
+    <tr><td>After staking</td><td><b>Independent audit</b>, covering the staking contract too. No auditor is booked yet. We will announce the auditor and the dates once they are confirmed. Until the audit is done, market caps stay small (10,000 USDG per market, 5,000 for the 24/7 markets).</td></tr>
     <tr><td>Planned</td><td><b>Multisig ownership.</b> Move ownership of every contract from one wallet to a Safe multisig, so no single key can change risk parameters or move vault liquidity.</td></tr>
     <tr><td>Planned</td><td><b>Liquidation monitoring.</b> Tooling that watches every position and liquidates unhealthy ones on time, so losses do not fall on lenders.</td></tr></table>
+  <h3 id="staking">$CIRRAVA staking (planned)</h3>
+  <p>The Safety Module lets $CIRRAVA holders stake as a first-loss layer for the Earn vault. It is a <b>plan</b>: nothing is built or deployed yet, and every number below may change. It is the next step on the roadmap, before the independent audit.</p>
+  <table class="wrap"><tr><th></th><th>Planned design (draft)</th></tr>
+    <tr><td>Stake</td><td>Deposit CIRRAVA and receive stkCIRRAVA. Staked shares cannot be transferred.</td></tr>
+    <tr><td>Unstake</td><td>Start a 7-day cooldown, then withdraw within a 2-day window. Staked tokens can still be slashed during the cooldown.</td></tr>
+    <tr><td>Slashing</td><td>If the Earn vault takes a loss (bad debt), up to 30% of the staked CIRRAVA per event can be slashed and used to make lenders whole. Every staker loses the same share.</td></tr>
+    <tr><td>Rewards</td><td>Not decided. Any reward scheme will be announced with its details before launch.</td></tr></table>
+  <p><b>Limits.</b> Coverage is only as large as the stake and what it can be sold for when it is needed; it is not a guarantee and not insurance in the legal sense. Stakers can lose up to 30% of their stake on each slash. Slashing is an owner decision, so it should move to a multisig before the module holds meaningful value. It would launch before the audit, so stake only what you can afford to lose.</p>
   <h3>Later</h3>
   <table class="wrap"><tr><th>Status</th><th>What</th></tr>
     <tr><td>After the audit</td><td>Higher market caps</td></tr>

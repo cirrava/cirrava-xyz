@@ -2,6 +2,12 @@
 
 Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 
+## 2026-11-28 — Roadmap: $CIRRAVA staking planned
+
+- Planned: $CIRRAVA staking as a first-loss safety layer for the Earn vault (design draft at /docs/staking;
+  nothing built or deployed yet).
+- Roadmap order: Phase 03 staking, Phase 04 independent audit.
+
 ## 2026-11-27 — v2: security fix and 24/7 markets
 
 - **Security (GHSA-7hw7-pqjf-gcxx, Low):** `StockOracle` did not read a Robinhood Stock Token's `oraclePaused()`

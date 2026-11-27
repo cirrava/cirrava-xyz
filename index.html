@@ -348,9 +348,10 @@ const FEATURES=[
   {tag:'Safety',title:'Non-Custodial',body:'Assets sit in smart contracts, never with a team or custodian, and every move is visible on-chain.',href:'/docs/contracts',cta:'View the contracts'},
 ];
 const PHASES=[
-  {phase:'PHASE 01 · LIVE',title:'Mainnet',sub:'Live on Robinhood Chain since 21 Nov 2026 — eight Stock Token markets plus 24/7 markets for NVDA, TSLA and GOOGL, with the USDG Earn vault',side:'right'},
-  {phase:'PHASE 02 · LIVE',title:'$CIRRAVA',sub:'The $CIRRAVA token is live on Robinhood Chain · 0x0267…446A',side:'left'},
-  {phase:'PHASE 03 · NEXT',title:'Audit & multisig',sub:'HEY Research review done, finding fixed in v2. Next: independent audit (dates once confirmed), Safe multisig, then higher caps',side:'right'},
+  {phase:'PHASE 01 · LIVE',title:'Mainnet',sub:'Live on Robinhood Chain since 21 Nov 2026 — eight Stock Token markets plus 24/7 markets for NVDA, TSLA and GOOGL, with the USDG Earn vault',side:'left'},
+  {phase:'PHASE 02 · LIVE',title:'$CIRRAVA',sub:'The $CIRRAVA token is live on Robinhood Chain · 0x0267…446A',side:'right'},
+  {phase:'PHASE 03 · NEXT',title:'Staking',sub:'$CIRRAVA staking as a first-loss safety layer for the Earn vault (planned)',side:'left'},
+  {phase:'PHASE 04 · LATER',title:'Audit',sub:'Independent audit (dates once confirmed), Safe multisig ownership, then higher caps',side:'left'},
 ];
 
 /* ---------------- blog card ---------------- */
@@ -608,8 +609,8 @@ function buildRoadmap(){
   const s=RM.scene;s.background=new THREE.Color('#1A1213');
   const H=10,pl=paintingPlane(ART.monet,H);s.add(pl);RM.painting=pl;const W=pl.userData.W;
   const at=(u,v)=>V((u-.5)*W,(.5-v)*H,.03);
-  // the rowing boat, the sun, the far cranes of the harbour
-  RM.pts=[at(.455,.705),at(.6,.315),at(.79,.37)];
+  // the small boat, the rowing boat, the sun, the far cranes of the harbour
+  RM.pts=[at(.29,.62),at(.455,.705),at(.6,.315),at(.79,.37)];
   const ui=new THREE.Group();s.add(ui);RM.ui=ui;RM.rings=[];
   RM.pts.forEach(pt=>{
     const ring=new THREE.Mesh(new THREE.RingGeometry(.2,.218,64),new THREE.MeshBasicMaterial({color:'#FFF6EC',transparent:true,depthWrite:false}));
