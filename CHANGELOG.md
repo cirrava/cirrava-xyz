@@ -7,6 +7,8 @@ Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 - Planned: $CIRRAVA staking as a first-loss safety layer for the Earn vault (design draft at /docs/staking;
   nothing built or deployed yet).
 - Roadmap order: Phase 03 staking, Phase 04 independent audit.
+- Staking draft: open questions from community feedback (who decides a slash, how a slash is paid out, where
+  rewards would come from) with the options under consideration, at /docs/staking-open.
 
 ## 2026-11-27 — v2: security fix and 24/7 markets
 
