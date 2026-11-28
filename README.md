@@ -1,5 +1,7 @@
 # Cirrava
 
+[![CIRRAVA on HEY Research Lab](https://heyresearch.xyz/api/badge/cirrava)](https://heyresearch.xyz/project/cirrava?utm_source=badge&utm_medium=readme)
+
 Borrow against Stock Tokens without selling them. Cirrava is a lending market on
 [Robinhood Chain](https://robinhoodchain.blockscout.com) (chain ID 4663): post a Robinhood Stock Token
 (NVDA, SPY, TSLA, AAPL, MSFT, QQQ, GOOGL, AMZN) as collateral and borrow USDG, or deposit USDG into the Earn vault and earn
