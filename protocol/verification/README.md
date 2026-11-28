@@ -1,6 +1,6 @@
 # Source verification
 
-All 26 live Cirrava contracts (v2) are verified on **Sourcify** as an **exact match** (same source and
+All 27 live Cirrava contracts (v2 and the timelock that owns them) are verified on **Sourcify** as an **exact match** (same source and
 compiler metadata), on Robinhood Chain (chain ID 4663):
 
 | Contract | Address | Sourcify |
@@ -31,21 +31,30 @@ compiler metadata), on Robinhood Chain (chain ID 4663):
 | LendingMarket TSLA 24/7 | `0xE029Ddf8fDf72771D363848F86c0bFF04d7e658f` | [view](https://repo.sourcify.dev/4663/0xE029Ddf8fDf72771D363848F86c0bFF04d7e658f) |
 | StockOracle GOOGL 24/7 | `0xB129B756AB75bbc2378f9721d1109F5EE6DC040b` | [view](https://repo.sourcify.dev/4663/0xB129B756AB75bbc2378f9721d1109F5EE6DC040b) |
 | LendingMarket GOOGL 24/7 | `0x532e2032b24e19B45E90abaF77Af2BbB09B93366` | [view](https://repo.sourcify.dev/4663/0x532e2032b24e19B45E90abaF77Af2BbB09B93366) |
+| CirravaTimelock (owner of all of the above) | `0xF71DBd41273832fE160FDc16DA37B1A783311D06` | [view](https://repo.sourcify.dev/4663/0xF71DBd41273832fE160FDc16DA37B1A783311D06) |
 
 ## Check it yourself
 
-`standard-input.json` is the exact Solidity standard-JSON input the deployed code was compiled from
-(solc `0.8.24+commit.e11b9ed9`, optimizer 200 runs, `viaIR`, `evmVersion: shanghai`).
+With `viaIR`, solc's output can depend on the set of files compiled together, so check each contract at the
+commit it was deployed from:
+
+| Contracts | Commit | Compile |
+|---|---|---|
+| v2 markets, oracles, Earn vault (and the reused calendar + IRM) | `476434a` | `git checkout 476434a && npx hardhat compile` |
+| CirravaTimelock | `cffd714` or later | `npx hardhat compile` on `main` |
 
 ```bash
 cd protocol
 npm install --legacy-peer-deps
-npx hardhat compile
+git checkout 476434a && npx hardhat clean && npx hardhat compile
 node scripts/match-bytecode.js      # compares runtime bytecode at every live address with this build
 ```
 
 `match-bytecode.js` masks immutable values (set by constructors) and compares everything else,
 including the metadata hash, so a pass means the live code was built from these exact source files.
+Every contract above is also an exact match on Sourcify, which keeps the original compiler input.
 
-To verify on Blockscout manually: **Verify & publish → Solidity (Standard JSON input)**, compiler
-`v0.8.24+commit.e11b9ed9`, upload `standard-input.json`, and pick the contract name from the table above.
+`standard-input.json` is the Solidity standard-JSON input of the v2 oracle/market build
+(solc `0.8.24+commit.e11b9ed9`, optimizer 200 runs, `viaIR`, `evmVersion: shanghai`). To verify on Blockscout
+manually: **Verify & publish → Solidity (Standard JSON input)**, compiler `v0.8.24+commit.e11b9ed9`, upload it,
+and pick the contract name.

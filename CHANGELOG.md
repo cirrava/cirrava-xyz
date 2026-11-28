@@ -2,6 +2,15 @@
 
 Notable changes to Cirrava's contracts, app and website. Dates are UTC.
 
+## 2026-11-28 — Admin moved to a Safe multisig behind a 48-hour timelock
+
+- Every Cirrava contract (v2 and retired v1, 43 in all) is now owned by `CirravaTimelock`
+  [`0xF71DBd41273832fE160FDc16DA37B1A783311D06`](https://robinhoodchain.blockscout.com/address/0xF71DBd41273832fE160FDc16DA37B1A783311D06), OpenZeppelin's TimelockController with a 48-hour delay, verified on Sourcify.
+- Only the Cirrava Safe [`0xe7FD39101dE3604a358c6a621670dD221e508c2e`](https://robinhoodchain.blockscout.com/address/0xe7FD39101dE3604a358c6a621670dD221e508c2e) (2 of 3 signers) can propose or cancel; anyone can
+  execute after the delay; the timelock has no admin. The Safe is every v2 market's pauser (instant emergency
+  pause) and the fee treasury. The previous admin wallet has no remaining power.
+- Tooling: `protocol/scripts/handover.js`, `verify-governance.js`, tests in `protocol/test/governance.test.js`.
+
 ## 2026-11-28 — Roadmap: $CIRRAVA staking planned
 
 - Planned: $CIRRAVA staking as a first-loss safety layer for the Earn vault (design draft at /docs/staking;

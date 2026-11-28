@@ -12,7 +12,7 @@ exchange is closed, and repaying, adding collateral and vault withdrawals never 
 - X: https://x.com/Cirrava
 
 > **Not audited.** The contracts are live on mainnet with real assets and have not been audited.
-> One wallet owns every contract. Read the [risks](https://cirrava.xyz/docs/risks) before you deposit.
+> Every contract is owned by a 48-hour timelock controlled by the Cirrava Safe multisig. Read the [risks](https://cirrava.xyz/docs/risks) before you deposit.
 > HEY Research Lab did a free security review in Nov 2026 (not an audit); its one Low finding is fixed in v2.
 
 ## Repository
@@ -45,7 +45,8 @@ exchange is closed, and repaying, adding collateral and vault withdrawals never 
 | MarketCalendar | [`0x13C77954bE518078Bb88a3A144A06246484Db946`](https://robinhoodchain.blockscout.com/address/0x13C77954bE518078Bb88a3A144A06246484Db946) |
 | InterestRateModel | [`0x667db67029E681420Ba684a073b7Eb9E52103Cb3`](https://robinhoodchain.blockscout.com/address/0x667db67029E681420Ba684a073b7Eb9E52103Cb3) |
 | StockOracle USDG | [`0xB40b5bc73CA6d05Cb4bbEF38c3A66F2B6Ac33C54`](https://robinhoodchain.blockscout.com/address/0xB40b5bc73CA6d05Cb4bbEF38c3A66F2B6Ac33C54) |
-| Owner & treasury | [`0xa319B076571a93C345Eb61Ec5131364dE81D0BA1`](https://robinhoodchain.blockscout.com/address/0xa319B076571a93C345Eb61Ec5131364dE81D0BA1) |
+| Owner: CirravaTimelock (48h) | [`0xF71DBd41273832fE160FDc16DA37B1A783311D06`](https://robinhoodchain.blockscout.com/address/0xF71DBd41273832fE160FDc16DA37B1A783311D06) |
+| Cirrava Safe (2 of 3): proposer, pauser, treasury | [`0xe7FD39101dE3604a358c6a621670dD221e508c2e`](https://robinhoodchain.blockscout.com/address/0xe7FD39101dE3604a358c6a621670dD221e508c2e) |
 | $CIRRAVA token | [`0x0267939aCc8C236e0eB2bd425c026c9180e7446A`](https://robinhoodchain.blockscout.com/address/0x0267939aCc8C236e0eB2bd425c026c9180e7446A) |
 
 **Source verified:** all 26 contracts are an exact match on [Sourcify](https://repo.sourcify.dev/4663/0xd1251c9402fDb71C95B766BE425E9a0076de0Ac8)

@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 dep = json.loads((ROOT / "protocol" / "deployments" / "robinhood.json").read_text(encoding="utf-8"))
+gov = json.loads((ROOT / "protocol" / "deployments" / "governance.json").read_text(encoding="utf-8"))
 ex = dep["explorer"]
 # $CIRRAVA token (ERC-20 on Robinhood Chain, verified on-chain: 18 decimals, 1,000,000,000 supply, no owner, not a proxy)
 CIRRAVA = "0x0267939aCc8C236e0eB2bd425c026c9180e7446A"
@@ -53,7 +54,8 @@ core = "\n".join([
     f'    <tr><td>MarketCalendar</td><td>{a(dep["calendar"])}</td></tr>',
     f'    <tr><td>InterestRateModel</td><td>{a(dep["irm"])}</td></tr>',
     f'    <tr><td>USDG oracle (24/7)</td><td>{a(dep["usdg"]["oracle"])}</td></tr>',
-    f'    <tr><td>Owner &amp; treasury</td><td>{a(dep["deployer"])}</td></tr>',
+    f'    <tr><td>Owner: CirravaTimelock (48h delay)</td><td>{a(gov["timelock"])}</td></tr>',
+    f'    <tr><td>Cirrava Safe ({gov["threshold"]} of {len(gov["owners"])}): proposer, pauser, treasury</td><td>{a(gov["safe"])}</td></tr>',
 ])
 tokens = "\n".join(
     [f'    <tr><td>USDG</td><td>{a(dep["usdg"]["address"])}</td><td>6</td><td>{a(dep["usdg"]["feed"])}</td></tr>']
@@ -103,7 +105,7 @@ NEW = f"""  <h2 id="intro">Introduction</h2>
 
   <h2 id="risks">Risks</h2>
   <div class="note">Read this before you deposit or borrow. Cirrava's contracts have not been audited. Deposits and loans use real assets and can be lost.</div>
-  <h3>Admin key</h3><p>One wallet currently owns every contract. It can change risk parameters, fees and the interest-rate model, pause a market, add markets to the Earn vault, set their caps, move vault liquidity between markets and withdraw protocol reserves. Lowering a liquidation threshold can make positions liquidatable, and adding a market lets that wallet route vault deposits to it, so a lost or stolen admin key puts deposits at risk. Moving ownership to a multisig is on the roadmap.</p>
+  <h3>Admin powers</h3><p>Every contract is owned by a <b>48-hour timelock</b>, and only the <b>Cirrava Safe</b> ({gov["threshold"]} of {len(gov["owners"])} signers) can propose to it. The owner can change risk parameters, fees and the interest-rate model, unpause a market, add markets to the Earn vault, set their caps, move vault liquidity between markets and withdraw protocol reserves. Every such change is scheduled on-chain and can only run 48 hours later, so you can see it coming and leave first; the Safe can cancel a scheduled change. The Safe can pause a market at once, without the delay, to stop borrowing and liquidations in an emergency. Lowering a liquidation threshold can still make positions liquidatable once it runs, and adding a market lets the owner route vault deposits to it, so the signers must be trusted; it now takes {gov["threshold"]} of them and 48 hours, not one key.</p>
   <h3>No upgrades</h3><p>The contracts are not upgradeable proxies: the code at each address is fixed. A fix would mean deploying new contracts.</p>
   <h3>Oracle dependencies</h3><p>Positions are priced from Chainlink's feeds on Robinhood Chain. A paused, stale or wrong feed stops or misprices borrowing and liquidations. Prices are also unavailable while Robinhood processes a corporate action on a Stock Token; if that lasted, liquidations for that token would stay paused and nothing on Cirrava's side can let them through, so an unhealthy position could not be closed until Robinhood clears it.</p>
   <h3>Security review</h3><p>HEY Research Lab reviewed the contracts for free in November 2026 and reported one Low-severity issue: the price oracles did not read the Stock Token's <code>oraclePaused()</code> flag during corporate actions. It was fixed in v2 (see <a href="/docs/corporate-actions">Splits and corporate actions</a>) before any deposits, and HEY's retest of the deployed v2 contracts confirmed the fix with no new findings at Low or above. A security review is not an audit and is no guarantee that the code is safe.</p>

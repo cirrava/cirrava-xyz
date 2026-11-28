@@ -1,0 +1,14 @@
+{
+  "safe": "0xe7FD39101dE3604a358c6a621670dD221e508c2e",
+  "timelock": "0xF71DBd41273832fE160FDc16DA37B1A783311D06",
+  "delay": 172800,
+  "owners": [
+    "0xCbee375b69ED7B135f60a9446e914A76d0580EDf",
+    "0x3552143e50B56C67B813ab4296e0c19bD0687F78",
+    "0xa319B076571a93C345Eb61Ec5131364dE81D0BA1"
+  ],
+  "threshold": 2,
+  "createdAt": "2026-11-28T02:16:09.673Z",
+  "status": "done: timelock owns every contract, delay 48h",
+  "handedOverAt": "2026-11-28"
+}
